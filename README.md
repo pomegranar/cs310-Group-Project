@@ -28,3 +28,9 @@ https://docs.google.com/document/d/1NMYmtUHWWL7xNTXi5h011cDegPWQqB8o7CllejP9p8k/
 - [ ] Student worker
 - [ ] Climbing wall staff
 - [ ] Security guard
+
+## Improvements
+- Automatically approve facility requests. 
+- Closing announcement thing.
+- Tapping card should automatically enter it into the required text field. 
+- Typing to search for equipment to check out should not be required. Everything should be buttons. 
