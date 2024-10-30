@@ -14,6 +14,11 @@ Team members are: Anar, Doniyor, Sean
 Google Doc link (anyone with the link can edit):
 https://docs.google.com/document/d/1NMYmtUHWWL7xNTXi5h011cDegPWQqB8o7CllejP9p8k/edit?usp=sharing
 
+## Tables
+- [ ] Users
+- [ ] Equipment
+- [ ] Changelog ?
+
 ## User types
 - [ ] Student
 - [ ] Faculty
@@ -21,4 +26,5 @@ https://docs.google.com/document/d/1NMYmtUHWWL7xNTXi5h011cDegPWQqB8o7CllejP9p8k/
 - [ ] Affiliates/Family of faculty
 - [ ] Worker
 - [ ] Student worker
+- [ ] Climbing wall staff
 - [ ] Security guard
