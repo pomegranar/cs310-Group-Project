@@ -10,6 +10,12 @@ Team members are: Anar, Doniyor, Sean
 - 05/12 : project presentation.
 - 08/12: report submission and peer group assessment submission.
 
+## Required Sections for the Software Requirements Specification:
+- [ ] Introduction. 
+- [ ] User requirements definition.
+- [ ] System requirements specification. 
+- [ ] System models.
+
 ## Project Proposal
 Google Doc link (anyone with the link can edit):
 https://docs.google.com/document/d/1NMYmtUHWWL7xNTXi5h011cDegPWQqB8o7CllejP9p8k/edit?usp=sharing
