@@ -10,16 +10,23 @@ Team members are: Anar, Doniyor, Sean
 - 05/12 : project presentation.
 - 08/12: report submission and peer group assessment submission.
 
+
+# SRS
 ## Required Sections for the Software Requirements Specification:
 - [ ] Introduction. 
 - [ ] User requirements definition.
 - [ ] System requirements specification. 
 - [ ] System models.
+## Collaborative Google Doc Link:
+https://docs.google.com/document/d/1d3XCcXY8Gzw8mQ4DGygr_bhmYVCxuQA_0WF4ub9iIrc/edit?usp=sharing
 
-## Project Proposal
+
+# Project Proposal (Finished and approved)
 Google Doc link (anyone with the link can edit):
 https://docs.google.com/document/d/1NMYmtUHWWL7xNTXi5h011cDegPWQqB8o7CllejP9p8k/edit?usp=sharing
 
+
+# Database Design:
 ## Tables
 - [ ] Users
 - [ ] Equipment
