@@ -14,9 +14,9 @@ Team members are: Anar, Doniyor, Sean
 # SRS
 ## Required Sections for the Software Requirements Specification:
 - [ ] Introduction. 
-      This describes the need for the system. It should briefly describe the system’s functions and explain how it will work with other systems. It should also describe how the system fits into the overall business or strategic objectives of the organization commissioning the software.
+      This describes the **need for the system**. It should briefly describe the system’s functions and explain **how it will work with other systems**. It should also describe how the system **fits into the overall business or strategic objectives** of the organization commissioning the software.
 - [ ] User requirements definition.
-      Here, you describe the services provided for the user. The nonfunctional system requirements should also be described in this section. This description may use natural language, diagrams, or other notations that are understandable to customers. Product and process standards that must be followed should be specified.
+      Here, you describe the **services provided for the user**. The nonfunctional system requirements should also be described in this section. This description may use natural language, diagrams, or other notations that are understandable to customers. Product and process standards that must be followed should be specified.
 - [ ] System requirements specification. 
       This describes the functional and non-functional requirements in more detail. If necessary, further detail may also be added to the nonfunctional requirements. Interfaces to other systems may be defined.
 - [ ] System models.
@@ -34,7 +34,13 @@ https://docs.google.com/document/d/1NMYmtUHWWL7xNTXi5h011cDegPWQqB8o7CllejP9p8k/
 ## Tables
 - [ ] Users
 - [ ] Equipment
-- [ ] Changelog ?
+- [ ] Notifications (email to users)
+- [ ] Social Credit
+	Lesser social credit means you can't rent expensive equipment. 
+- [ ] 
+
+Whenever something hapepns, record to a csv file what happened. 
+
 
 ## User types
 - [ ] Student
