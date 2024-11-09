@@ -27,6 +27,7 @@ CREATE TABLE Equipment (
     Checked_out_user_id INT,
     Checkout_time DATETIME,
     Due_when DATETIME,
+    -- Anar: Warning: Condition must be written in `BACKTICKS` because it's apparently a reserved word in MySQL :/  
     `Condition` ENUM('good', 'damaged', 'broken'),
     FOREIGN KEY (Checked_out_user_id) REFERENCES Users(User_ID)
 );
