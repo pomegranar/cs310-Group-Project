@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS Equipment (
     Due_when DATETIME,
     -- Anar: Warning: Condition must be written in `BACKTICKS` because it's apparently a reserved word in MySQL :/  
     `Condition` ENUM('good', 'damaged', 'broken') DEFAULT 'good',
-    UNIQUE(Sport, Name),
+    UNIQUE(Sport, Name, Number),
     FOREIGN KEY (Checked_out_user_id) REFERENCES Users(User_ID) ON DELETE SET NULL
 );
 

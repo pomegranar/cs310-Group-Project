@@ -19,7 +19,16 @@ cursor.execute("USE sports_complex")
 with open('queries/init_tables.sql', 'r') as sql_file:
     sql_script = sql_file.read()
 cursor.execute(sql_script, multi=True)
-
 cursor.close()
+
+
+# cursor = conn.cursor()
+# # Fill all tables using script queries/fill_tables.sql
+# with open('queries/fill_tables.sql', 'r') as fill_file:
+#     fill_script = fill_file.read()
+# cursor.execute(fill_script, multi=True)
+# cursor.close()
+
+
 conn.close()
 print("Database setup complete.")
