@@ -4,11 +4,38 @@ A group project for the Computer Science 310 – Introduction to Databases cours
 Team members are: Anar, Doniyor, Sean
 
 ## Timeline
-- 28/10: project topic approval deadline.
-- 03/11: software requirements specification document submission.
-- 17/11: database design document submission.
-- 05/12 : project presentation.
-- 08/12: report submission and peer group assessment submission.
+- [x] 28/10: project topic approval deadline.
+- [x] 03/11: software requirements specification document submission.
+- [ ] 10/11: database design document submission.
+- [ ] 05/12 : project presentation.
+- [ ] 08/12: report submission and peer group assessment submission.
+
+
+
+# Database Design:
+Sports Complex IMS Database Design Document
+Google Docs link with edit access: https://docs.google.com/document/d/1gv8seOHcQIo4mhCA1abxsu-VML-hen7Qq4Lq1JHkTHk/edit?usp=sharing
+
+## Tables
+- [ ] Users
+- [ ] Equipment
+- [ ] Notifications (email to users)
+
+## User types
+- [ ] Student
+- [ ] Faculty
+- [ ] Lifeguard
+- [ ] Affiliates/Family of faculty
+- [ ] Worker
+- [ ] Student worker
+- [ ] Climbing wall staff
+- [ ] Security guard
+
+## Improvements
+- Automatically approve facility requests. 
+- Closing announcement thing.
+- Tapping card should automatically enter it into the required text field. 
+- Typing to search for equipment to check out should not be required. Everything should be buttons. 
 
 
 # SRS
@@ -30,30 +57,13 @@ Google Doc link (anyone with the link can edit):
 https://docs.google.com/document/d/1NMYmtUHWWL7xNTXi5h011cDegPWQqB8o7CllejP9p8k/edit?usp=sharing
 
 
-# Database Design:
-## Tables
-- [ ] Users
-- [ ] Equipment
-- [ ] Notifications (email to users)
-- [ ] Social Credit
-	Lesser social credit means you can't rent expensive equipment. 
-- [ ] 
-
-Whenever something hapepns, record to a csv file what happened. 
 
 
-## User types
-- [ ] Student
-- [ ] Faculty
-- [ ] Lifeguard
-- [ ] Affiliates/Family of faculty
-- [ ] Worker
-- [ ] Student worker
-- [ ] Climbing wall staff
-- [ ] Security guard
 
-## Improvements
-- Automatically approve facility requests. 
-- Closing announcement thing.
-- Tapping card should automatically enter it into the required text field. 
-- Typing to search for equipment to check out should not be required. Everything should be buttons. 
+
+
+
+
+
+
+
