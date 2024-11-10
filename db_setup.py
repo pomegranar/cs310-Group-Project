@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS Users (
     Email VARCHAR(100) UNIQUE,
     Phone VARCHAR(15),
     Portrait BLOB,
-    Social_credit INT DEFAULT 100 CHECK (Social_credit >= 0,
+    Social_credit INT DEFAULT 100 CHECK (Social_credit >= 0),
     Birthday DATE,
     Proof_doc BLOB,
     `Role` ENUM('student', 'faculty', 'staff', 'worker', 'student_worker', 'affiliate', 'alumni', 'guest', 'security'),

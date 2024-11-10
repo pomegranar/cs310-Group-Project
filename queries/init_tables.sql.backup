@@ -1,7 +1,7 @@
 USE sports_complex;
 
 CREATE TABLE Users (
-    User_ID Number(5) GENERATED ALWAYS AS IDENTITY,
+    User_ID INT AUTO_INCREMENT PRIMARY KEY,
     Firstname VARCHAR(50),
     Surname VARCHAR(50),
     NetID VARCHAR(50),
