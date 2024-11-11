@@ -13,7 +13,8 @@ CREATE TABLE IF NOT EXISTS Users (
     Social_credit INT DEFAULT 100 CHECK (Social_credit >= 0),
     Birthday DATE,
     Proof_doc BLOB,
-    `Role` ENUM('student', 'faculty', 'staff', 'worker', 'student_worker', 'affiliate', 'alumni', 'guest', 'security'),
+    `Role` ENUM('student', 'faculty', 'staff', 'worker', 'student_worker',
+        'affiliate', 'alumni', 'guest', 'security'),
     Member_status ENUM('active', 'expired', 'banned', 'restricted'),
     Membership_creation_date DATE,
     Outstanding_due DECIMAL(10, 2) CHECK (Outstanding_due >= 0)
@@ -42,4 +43,16 @@ CREATE TABLE IF NOT EXISTS Notifications (
     Status ENUM('Sent', 'Pending', 'Failed', 'Reply_received') DEFAULT 'Pending',
     Send_date DATETIME,
     FOREIGN KEY (To_whom) REFERENCES Users(User_ID) ON DELETE CASCADE 
+);
+
+CREATE TABLE IF NOT EXISTS Checkout_Record(
+    Checkout_ID INT AUTO_INCREMENT PRIMARY KEY,
+    User_ID INT,
+    Equipment_ID INT,
+    check_out_date DATETIME,
+    due_date DATETIME,
+    actual_return_date DATETIME,
+    fine numeric(4,2),
+    FOREIGN KEY (equipment_ID) REFERENCES Equipment (Equipment_ID),
+    FOREIGN KEY (User_ID) REFERENCES Users (User_ID)
 );
