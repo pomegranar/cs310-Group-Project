@@ -1,6 +1,6 @@
 """
 Setup script for the Sports Complex IMS database.
-Run this before running setup.py.
+Run this before running setup.py!
 """
 
 import mysql.connector
