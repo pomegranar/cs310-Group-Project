@@ -1,3 +1,3 @@
-SELECT `Firstname`,`Surname`,`Card`,`User_ID`,`Equipment_ID`,`Sport`,`Name`,`Number` 
-FROM `Users` JOIN `Equipment` ON Users.`User_ID` = Equipment.`Checked_out_user_id` 
-WHERE Equipment.`Checked_out_user_id` IS NOT NULL ORDER BY `User_ID`;
+SELECT `firstname`,`surname`,`card`,`user_id`,`equipment_id`,`sport`,`name`,`number`
+FROM `users` JOIN `equipment` ON users.`user_id` = equipment.`checked_out_user_id`
+WHERE equipment.`checked_out_user_id` IS NOT NULL ORDER BY `user_id`;
