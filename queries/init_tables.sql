@@ -49,12 +49,12 @@ CREATE TABLE IF NOT EXISTS notifications (
 
 CREATE TABLE IF NOT EXISTS checkout_record(
     checkout_id INT AUTO_INCREMENT PRIMARY KEY,
-    user_id INT,
+    user_id INT NOT NULL,
     equipment_id INT,
     check_out_date DATETIME,
-    due_date DATETIME,
+    due_date DATETIME DEFAULT (DATE_ADD(CURRENT_DATE(), INTERVAL 1 DAY)),
     actual_return_date DATETIME,
     fine numeric(4,2),
     FOREIGN KEY (equipment_ID) REFERENCES equipment (equipment_id),
-    FOREIGN KEY (user_id) REFERENCES users (user_id)
+    FOREIGN KEY (user_id) REFERENCES users (user_id) ON DELETE CASCADE
 );
