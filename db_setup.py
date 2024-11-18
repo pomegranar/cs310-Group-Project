@@ -3,9 +3,10 @@ Setup script for the Sports Complex IMS database.
 Run this before running setup.py!
 """
 
+import getpass
 import mysql.connector
 
-password = input("Enter password, but be warned as it will be visible: ")
+password = getpass.getpass(prompt='Password: ', stream=None)
 
 # Establish connection to MySQL
 conn = mysql.connector.connect(
