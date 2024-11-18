@@ -1,11 +1,13 @@
 """
 Run this to start the server.
+Try not to edit this.
 """
 
-from flask import Flask, render_template, request, jsonify
+import getpass
 import mysql.connector
+from flask import Flask, render_template, request, jsonify
 
-password = input("Enter password, but remember it will be visible: ")
+password = getpass.getpass(prompt='Password: ', stream=None)
 
 app = Flask(__name__)
 
@@ -15,7 +17,7 @@ def get_db_connection():
     return mysql.connector.connect(
         host="localhost",
         user="root",  # Replace with your MySQL username
-        password=password,  # Replace with your MySQL password
+        password=password,
         database="sports_complex"
     )
 
@@ -32,7 +34,8 @@ def get_equipment():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("SELECT Equipment_ID, Sport, Name FROM Equipment")
+    cursor.execute(
+        "SELECT Equipment_ID, Sport, Name FROM sports_complex.Equipment")
 
     equipment = cursor.fetchall()
 

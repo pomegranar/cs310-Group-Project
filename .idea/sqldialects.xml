@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="SqlDialectMappings">
-    <file url="file://$PROJECT_DIR$/db_setup.py" dialect="GenericSQL" />
-    <file url="file://$PROJECT_DIR$/queries/get_all_checkouts.sql" dialect="MySQL" />
-    <file url="file://$PROJECT_DIR$/queries/init_tables.sql" dialect="MySQL" />
+    <file url="file://$PROJECT_DIR$/../../Homework/hw3/anar-hw3.sql" dialect="MySQL" />
     <file url="PROJECT" dialect="MySQL" />
   </component>
 </project>
