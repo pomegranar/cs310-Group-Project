@@ -23,7 +23,6 @@ CREATE TABLE contact (
 	fullname	VARCHAR(50) NOT NULL,
 	number1		INT NOT NULL,
 	number2		INT,
-
 	PRIMARY KEY (id)
 )
 

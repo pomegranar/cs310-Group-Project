@@ -4,6 +4,7 @@ Try not to edit this.
 """
 
 import getpass
+# import json
 import mysql.connector
 from flask import Flask, render_template, request, jsonify
 
@@ -63,7 +64,7 @@ def checkout_equipment():
         SET Checked_out_user_id = (SELECT User_ID FROM Users WHERE Card = %s),
             Checkout_time = NOW(),
             Due_when = NOW() + INTERVAL 1 DAY
-        WHERE Equipment_ID = %s AND Checked_out_user_id IS NULL;
+        WHERE equipment_ID = %s AND checked_out_user_id IS NULL;
         """, (card_id, equipment_id))
 
     if cursor.rowcount == 0:

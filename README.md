@@ -12,12 +12,14 @@ Team members are: Anar, Doniyor, Sean
 
 ## Development Roadmap
 - [ ] Define new features to add.
+	- [ ] JSON
+	- [ ]
 - [ ] Design E-R model with ER diagram.
 - [ ] Init Report (add the diagram).
 - [ ] Refactor database schema to fit the new E-R model.
 - [ ] Fill new tables.
-- [ ] Finish implementing features.
-- [ ]
+- [ ] Finish implementing features in Python.
+- [ ] Redesign the user interface.
 
 
 # Database Design:

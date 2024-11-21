@@ -41,7 +41,7 @@ INSERT INTO equipment (sport, name, number, checked_out_user_id, checkout_time, 
 -- Continue with more equipment entries...
 
 -- Notifications table insertions
-INSERT INTO notifications (to_whom, message, notification_type, 'status', send_date) VALUES
+INSERT INTO notifications (to_whom, message, notification_type, status, send_date) VALUES
 (1, 'Your equipment is due tomorrow', 'reminder', 'Sent', '2024-11-09 14:30:00'),
 (2, 'You have outstanding dues', 'warning', 'Sent', '2024-11-09 15:00:00'),
 (3, 'Welcome to the sports complex!', 'general', 'Sent', '2024-11-09 16:00:00');
