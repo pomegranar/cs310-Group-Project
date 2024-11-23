@@ -60,10 +60,10 @@ def checkout_equipment():
 
     # Update equipment table with checkout details
     cursor.execute("""
-        UPDATE Equipment
-        SET Checked_out_user_id = (SELECT User_ID FROM Users WHERE Card = %s),
-            Checkout_time = NOW(),
-            Due_when = NOW() + INTERVAL 1 DAY
+        UPDATE equipment
+        SET checked_out_user_id = (SELECT user_id FROM users WHERE card = %s),
+            checkout_time = NOW(),
+            due_when = NOW() + INTERVAL 1 DAY
         WHERE equipment_ID = %s AND checked_out_user_id IS NULL;
         """, (card_id, equipment_id))
 

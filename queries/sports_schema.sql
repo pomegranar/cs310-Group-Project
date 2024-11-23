@@ -1,6 +1,6 @@
-IF NOT EXISTS CREATE DATABASE sports;
+CREATE DATABASE IF NOT EXISTS sports;
 
-IF EXISTS DROP user;
+DROP TABLE IF EXISTS user;
 CREATE TABLE users (
 	id 			INT AUTO_INCREMENT,
 	netid		VARCHAR(10) UNIQUE,
@@ -15,20 +15,22 @@ CREATE TABLE users (
 	FOREIGN KEY (contact) 	REFERENCES contact (id),
 	FOREIGN KEY (emergency)	REFERENCES contact (id),
 	CONSTRAINT 	chk_contact_em_contact CHECK (contact != emergency)
-)
+);
 
-IF EXISTS DROP contact;
+DROP TABLE IF EXISTS contact;
 CREATE TABLE contact (
 	id 			INT AUTO_INCREMENT,
 	fullname	VARCHAR(50) NOT NULL,
 	number1		INT NOT NULL,
 	number2		INT,
 	PRIMARY KEY (id)
-)
+);
 
-IF EXISTS DROP equipment;
-IF EXISTS DROP space;
-IF EXISTS DROP class;
-IF EXISTS DROP notifs;
-IF EXISTS DROP record;
-
+DROP TABLE IF EXISTS membership;
+DROP TABLE IF EXISTS equipment;
+DROP TABLE IF EXISTS space;
+DROP TABLE IF EXISTS class;
+DROP TABLE IF EXISTS notifs;
+DROP TABLE IF EXISTS record;
+DROP VIEW IF EXISTS suspendeds;
+DROP TRIGGER IF EXISTS on_reservation;
