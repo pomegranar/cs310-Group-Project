@@ -1,32 +1,53 @@
 CREATE DATABASE IF NOT EXISTS sports;
+use sports;
 
 DROP TABLE IF EXISTS user;
-CREATE TABLE users (
-	id 			INT AUTO_INCREMENT,
-	netid		VARCHAR(10) UNIQUE,
+
+CREATE TABLE user (
+	userID 		INT AUTO_INCREMENT,
+	netID		VARCHAR(8) UNIQUE,
 	firstname	VARCHAR(50) NOT NULL,
 	surname 	VARCHAR(50),
 	gender		ENUM('male', 'female', 'other', 'undisclosed'),
-	cardnum		INT UNIQUE,
+	card_number		INT UNIQUE,
 	email 		VARCHAR(100),
-	contact		INT UNIQUE,
-	emergency	INT,
-	PRIMARY KEY (id),
-	FOREIGN KEY (contact) 	REFERENCES contact (id),
-	FOREIGN KEY (emergency)	REFERENCES contact (id),
-	CONSTRAINT 	chk_contact_em_contact CHECK (contact != emergency)
+	phone_number	BIGINT UNIQUE CHECK(length(phone_number)<= 15),
+	emergency_contact	INT,
+	PRIMARY KEY (userID),
+	FOREIGN KEY (emergency_contact)	REFERENCES emergency_info (emergency_contactID),
+	CONSTRAINT 	chk_contact_em_contact CHECK (user.phone_number != emergency_contact)
 );
 
-DROP TABLE IF EXISTS contact;
-CREATE TABLE contact (
-	id 			INT AUTO_INCREMENT,
-	fullname	VARCHAR(50) NOT NULL,
-	number1		INT NOT NULL,
-	number2		INT,
-	PRIMARY KEY (id)
+
+DROP TABLE IF EXISTS emergency_info;
+
+CREATE TABLE emergency_info (
+	emergency_contactID     INT AUTO_INCREMENT,
+	firstname	VARCHAR(50) NOT NULL,
+    surname     VARCHAR(50) NOT NULL,
+	phone_number BIGINT UNIQUE CHECK(length(phone_number)<= 15),
+	email 		VARCHAR(100),
+    relationship ENUM ('parent', 'sibling', 'friend', 'coursemate', 'other') NOT NULL,
+	PRIMARY KEY (emergency_contactID)
 );
+
 
 DROP TABLE IF EXISTS membership;
+
+CREATE TABLE membership (
+    membershipID INT AUTO_INCREMENT,
+    userID   INT,
+    start_date DATE,
+    end_date DATE,
+    status ENUM ('Active', 'Expired', 'Cancelled'),
+    additional_notes VARCHAR(200),
+    PRIMARY KEY (membershipID),
+    FOREIGN KEY (userID) REFERENCES user (userID)
+);
+
+
+
+
 DROP TABLE IF EXISTS equipment;
 DROP TABLE IF EXISTS space;
 DROP TABLE IF EXISTS class;
