@@ -127,6 +127,19 @@ CREATE TABLE booking(
 );
 
 
+DROP TABLE IF EXISTS session_enrollment;
+
+CREATE TABLE session_enrollment(
+    enrollmentID INT AUTO_INCREMENT,
+    membershipID INT,
+    sessionID INT,
+    enrollment_date DATE NOT NULL,
+    attendance_status ENUM ('enrolled', 'dropped') DEFAULT 'enrolled',
+    PRIMARY KEY (enrollmentID),
+    FOREIGN KEY (membershipID) REFERENCES membership(membershipID),
+    FOREIGN KEY (sessionID) REFERENCES session(sessionID)
+);
+
 
 
 
