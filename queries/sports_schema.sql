@@ -1,9 +1,10 @@
-CREATE DATABASE IF NOT EXISTS sports;
+DROP DATABASE IF EXISTS sports;
+CREATE DATABASE sports;
 use sports;
 
+DROP TABLE IF EXISTS contact; -- Multivalued attribute used for both emergency contact and user contact info.
+DROP TABLE IF EXISTS membership; --
 DROP TABLE IF EXISTS user; --
-DROP TABLE IF EXISTS contact; --
-DROP TABLE IF EXISTS membership;
 DROP TABLE IF EXISTS sport;
 DROP TABLE IF EXISTS facility;
 DROP TABLE IF EXISTS instructor;
@@ -22,41 +23,40 @@ DROP TRIGGER IF EXISTS on_reservation;
 
 
 CREATE TABLE user (
-	userid 		INT AUTO_INCREMENT,
-	netid		VARCHAR(8) UNIQUE,
+	id 			INT AUTO_INCREMENT,
+	netid		VARCHAR(8) UNIQUE, -- Some might not have a netid.
 	firstname	VARCHAR(50) NOT NULL,
-	surname 	VARCHAR(50),
+	surname 	VARCHAR(50), -- Someone might not have a surname.
 	gender		ENUM('male', 'female', 'other', 'undisclosed'),
 	card_number	INT UNIQUE, -- This is the code from the card scanner.
 	email 		VARCHAR(100),
-	phone_number	BIGINT UNIQUE CHECK(length(phone_number)<= 15),
+	phone		BIGINT UNIQUE CHECK(length(phone)<= 15),
 	emergency_contact	INT,
-	PRIMARY KEY (userID),
-	FOREIGN KEY (emergency_contact)	REFERENCES contact (emergency_contactID),
-	CONSTRAINT 	chk_contact_em_contact CHECK (user.phone_number != emergency_contact)
+	PRIMARY KEY (id),
+	FOREIGN KEY (emergency_contact)	REFERENCES contact (id),
+	CONSTRAINT 	chk_contact_em_contact CHECK (user.phone != emergency_contact)
 );
 
 CREATE TABLE contact (
-	emergency_contactID     INT AUTO_INCREMENT,
+	id			INT AUTO_INCREMENT,
 	firstname	VARCHAR(50) NOT NULL,
     surname     VARCHAR(50) NOT NULL,
-	phone_number BIGINT UNIQUE CHECK(length(phone_number)<= 15),
+	phone 		BIGINT UNIQUE CHECK(length(phone)<= 15),
 	email 		VARCHAR(100),
     relationship ENUM ('parent', 'sibling', 'friend', 'coursemate', 'other') NOT NULL,
-	PRIMARY KEY (emergency_contactID)
+	PRIMARY KEY (id)
 );
 
 
-
 CREATE TABLE membership (
-    membershipID INT AUTO_INCREMENT,
+    id INT AUTO_INCREMENT,
     userID   INT,
     start_date DATE,
     end_date DATE,
     status ENUM ('active', 'expired', 'cancelled'),
     additional_notes VARCHAR(200),
     PRIMARY KEY (membershipID),
-    FOREIGN KEY (userID) REFERENCES user (userID)
+    FOREIGN KEY (userID) REFERENCES user (id)
 );
 
 
@@ -67,7 +67,6 @@ CREATE TABLE sport(
     status ENUM ('active', 'unavailable') DEFAULT 'active',
     PRIMARY KEY (sportID)
 );
-
 
 
 CREATE TABLE facility(
@@ -135,15 +134,11 @@ CREATE TABLE booking(
 CREATE TABLE session_enrollment(
     enrollmentID INT AUTO_INCREMENT,
     membershipID INT,
-    sessionID INT,
+    sessionID 	INT,
     enrollment_date DATE NOT NULL,
     attendance_status ENUM ('enrolled', 'dropped') DEFAULT 'enrolled',
     PRIMARY KEY (enrollmentID),
     FOREIGN KEY (membershipID) REFERENCES membership(membershipID),
     FOREIGN KEY (sessionID) REFERENCES session(sessionID)
 );
-
-
-
-
 
