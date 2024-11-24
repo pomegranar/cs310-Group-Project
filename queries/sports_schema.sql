@@ -52,7 +52,7 @@ CREATE TABLE sport(
     sportID INT AUTO_INCREMENT,
     name VARCHAR(60),
     description VARCHAR(150),
-    status ENUM ('active', 'unavailable'),
+    status ENUM ('active', 'unavailable') DEFAULT 'active',
     PRIMARY KEY (sportID)
 );
 
@@ -61,10 +61,12 @@ DROP TABLE IF EXISTS  facility;
 
 CREATE TABLE facility(
     facilityID INT AUTO_INCREMENT,
-    name VARCHAR(40),
+    sportID INT,
+    description VARCHAR(100),
     type ENUM ('indoor', 'outdoor'),
     capacity INT CHECK(length(capacity)<= 3),
-    PRIMARY KEY  (facilityID)
+    PRIMARY KEY  (facilityID),
+    FOREIGN KEY (sportID) REFERENCES sport(sportID)
 );
 
 
@@ -88,11 +90,14 @@ CREATE TABLE session(
     sessionID INT AUTO_INCREMENT,
     instructorID INT,
     facilityID INT,
+    time_slotID INT,
     name VARCHAR(50),
     year NUMERIC(4, 0) CHECK (year> 2018 AND year<2100),
-    time_slotID INT,
+    semester VARCHAR(30) CHECK (semester IN ('Fall', 'Spring')),
     PRIMARY KEY (sessionID),
-    FOREIGN KEY (time_slotID) REFERENCES time_slot(time_slotID)
+    FOREIGN KEY (time_slotID) REFERENCES time_slot(time_slotID),
+    FOREIGN KEY (instructorID) REFERENCES  instructor(instructorID),
+    FOREIGN KEY (facilityID) REFERENCES facility(facilityID)
 );
 
 
@@ -101,20 +106,25 @@ DROP TABLE IF EXISTS time_slot;
 CREATE TABLE time_slot(
     time_slotID INT AUTO_INCREMENT,
     day  VARCHAR(40) CHECK (day in ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
-    start_time TIME,
-    end_time TIME,
+    start_time TIME NOT NULL,
+    end_time TIME NOT NULL,
     PRIMARY KEY  (time_slotID)
 );
 
 
 DROP TABLE IF EXISTS booking;
 
-# CREATE TABLE booking(
-#     bookingID INT AUTO_INCREMENT,
-#     memberID INT,
-#     facilityID INT,
-#
-# )
+CREATE TABLE booking(
+    bookingID INT AUTO_INCREMENT,
+    memberID INT,
+    facilityID INT,
+    start_time DATETIME NOT NULL,
+    end_time DATETIME NOT NULL,
+    status ENUM ('active', 'cancelled') DEFAULT 'active',
+    PRIMARY KEY (bookingID),
+    FOREIGN KEY (memberID) REFERENCES membership(membershipID),
+    FOREIGN KEY (facilityID) REFERENCES facility(facilityID)
+);
 
 
 
