@@ -1,27 +1,42 @@
 CREATE DATABASE IF NOT EXISTS sports;
 use sports;
 
-DROP TABLE IF EXISTS user;
+DROP TABLE IF EXISTS user; --
+DROP TABLE IF EXISTS contact; --
+DROP TABLE IF EXISTS membership;
+DROP TABLE IF EXISTS sport;
+DROP TABLE IF EXISTS facility;
+DROP TABLE IF EXISTS instructor;
+DROP TABLE IF EXISTS session;
+DROP TABLE IF EXISTS time_slot;
+
+DROP TABLE IF EXISTS equipment;
+DROP TABLE IF EXISTS class;
+DROP TABLE IF EXISTS notifs;
+DROP TABLE IF EXISTS record;
+DROP TABLE IF EXISTS booking;
+DROP TABLE IF EXISTS session_enrollment;
+DROP VIEW IF EXISTS suspendeds;
+DROP TRIGGER IF EXISTS on_reservation;
+
+
 
 CREATE TABLE user (
-	userID 		INT AUTO_INCREMENT,
-	netID		VARCHAR(8) UNIQUE,
+	userid 		INT AUTO_INCREMENT,
+	netid		VARCHAR(8) UNIQUE,
 	firstname	VARCHAR(50) NOT NULL,
 	surname 	VARCHAR(50),
 	gender		ENUM('male', 'female', 'other', 'undisclosed'),
-	card_number		INT UNIQUE,
+	card_number	INT UNIQUE, -- This is the code from the card scanner.
 	email 		VARCHAR(100),
 	phone_number	BIGINT UNIQUE CHECK(length(phone_number)<= 15),
 	emergency_contact	INT,
 	PRIMARY KEY (userID),
-	FOREIGN KEY (emergency_contact)	REFERENCES emergency_info (emergency_contactID),
+	FOREIGN KEY (emergency_contact)	REFERENCES contact (emergency_contactID),
 	CONSTRAINT 	chk_contact_em_contact CHECK (user.phone_number != emergency_contact)
 );
 
-
-DROP TABLE IF EXISTS emergency_info;
-
-CREATE TABLE emergency_info (
+CREATE TABLE contact (
 	emergency_contactID     INT AUTO_INCREMENT,
 	firstname	VARCHAR(50) NOT NULL,
     surname     VARCHAR(50) NOT NULL,
@@ -32,21 +47,18 @@ CREATE TABLE emergency_info (
 );
 
 
-DROP TABLE IF EXISTS membership;
 
 CREATE TABLE membership (
     membershipID INT AUTO_INCREMENT,
     userID   INT,
     start_date DATE,
     end_date DATE,
-    status ENUM ('Active', 'Expired', 'Cancelled'),
+    status ENUM ('active', 'expired', 'cancelled'),
     additional_notes VARCHAR(200),
     PRIMARY KEY (membershipID),
     FOREIGN KEY (userID) REFERENCES user (userID)
 );
 
-
-DROP TABLE IF EXISTS sport;
 
 CREATE TABLE sport(
     sportID INT AUTO_INCREMENT,
@@ -57,7 +69,6 @@ CREATE TABLE sport(
 );
 
 
-DROP TABLE IF EXISTS  facility;
 
 CREATE TABLE facility(
     facilityID INT AUTO_INCREMENT,
@@ -69,8 +80,6 @@ CREATE TABLE facility(
     FOREIGN KEY (sportID) REFERENCES sport(sportID)
 );
 
-
-DROP TABLE IF EXISTS instructor;
 
 CREATE TABLE instructor(
     instructorID INT AUTO_INCREMENT,
@@ -84,8 +93,6 @@ CREATE TABLE instructor(
 );
 
 
-DROP TABLE IF EXISTS session;
-
 CREATE TABLE session(
     sessionID INT AUTO_INCREMENT,
     instructorID INT,
@@ -93,7 +100,7 @@ CREATE TABLE session(
     time_slotID INT,
     name VARCHAR(50),
     year NUMERIC(4, 0) CHECK (year> 2018 AND year<2100),
-    semester VARCHAR(30) CHECK (semester IN ('Fall', 'Spring')),
+    semester VARCHAR(30) CHECK (semester IN ('fall', 'spring')),
     PRIMARY KEY (sessionID),
     FOREIGN KEY (time_slotID) REFERENCES time_slot(time_slotID),
     FOREIGN KEY (instructorID) REFERENCES  instructor(instructorID),
@@ -101,18 +108,15 @@ CREATE TABLE session(
 );
 
 
-DROP TABLE IF EXISTS time_slot;
 
 CREATE TABLE time_slot(
     time_slotID INT AUTO_INCREMENT,
-    day  VARCHAR(40) CHECK (day in ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
+    day  VARCHAR(40) CHECK (day in ('monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday')),
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
     PRIMARY KEY  (time_slotID)
 );
 
-
-DROP TABLE IF EXISTS booking;
 
 CREATE TABLE booking(
     bookingID INT AUTO_INCREMENT,
@@ -127,7 +131,6 @@ CREATE TABLE booking(
 );
 
 
-DROP TABLE IF EXISTS session_enrollment;
 
 CREATE TABLE session_enrollment(
     enrollmentID INT AUTO_INCREMENT,
@@ -144,11 +147,3 @@ CREATE TABLE session_enrollment(
 
 
 
-
-DROP TABLE IF EXISTS equipment;
-DROP TABLE IF EXISTS space;
-DROP TABLE IF EXISTS class;
-DROP TABLE IF EXISTS notifs;
-DROP TABLE IF EXISTS record;
-DROP VIEW IF EXISTS suspendeds;
-DROP TRIGGER IF EXISTS on_reservation;

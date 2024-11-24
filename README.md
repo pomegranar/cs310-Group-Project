@@ -13,8 +13,8 @@ Team members are: Anar, Doniyor, Sean
 ## Development Roadmap
 - [ ] Define new features to add.
 	- [ ] Saving logs as a JSON file.
-	- [ ] Space reservations (+schedule conflict checks).
-	- [ ] Class registration.
+	- [ ] Space reservations (+schedule conflict checks via trigger).
+	- [ ] Class registration/check-in.
 - [ ] Design E-R model with ER diagram.
 - [ ] Init Report (add the diagram).
 - [ ] Refactor database schema to fit the new E-R model.
