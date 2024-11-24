@@ -46,6 +46,80 @@ CREATE TABLE membership (
 );
 
 
+DROP TABLE IF EXISTS sport;
+
+CREATE TABLE sport(
+    sportID INT AUTO_INCREMENT,
+    name VARCHAR(60),
+    description VARCHAR(150),
+    status ENUM ('active', 'unavailable'),
+    PRIMARY KEY (sportID)
+);
+
+
+DROP TABLE IF EXISTS  facility;
+
+CREATE TABLE facility(
+    facilityID INT AUTO_INCREMENT,
+    name VARCHAR(40),
+    type ENUM ('indoor', 'outdoor'),
+    capacity INT CHECK(length(capacity)<= 3),
+    PRIMARY KEY  (facilityID)
+);
+
+
+DROP TABLE IF EXISTS instructor;
+
+CREATE TABLE instructor(
+    instructorID INT AUTO_INCREMENT,
+    firstname	VARCHAR(50) NOT NULL,
+	surname 	VARCHAR(50),
+	gender		ENUM('male', 'female', 'other', 'undisclosed'),
+	email 		VARCHAR(100),
+    sportID INT,
+    PRIMARY KEY (instructorID),
+    FOREIGN KEY (sportID) REFERENCES sport(sportID)
+);
+
+
+DROP TABLE IF EXISTS session;
+
+CREATE TABLE session(
+    sessionID INT AUTO_INCREMENT,
+    instructorID INT,
+    facilityID INT,
+    name VARCHAR(50),
+    year NUMERIC(4, 0) CHECK (year> 2018 AND year<2100),
+    time_slotID INT,
+    PRIMARY KEY (sessionID),
+    FOREIGN KEY (time_slotID) REFERENCES time_slot(time_slotID)
+);
+
+
+DROP TABLE IF EXISTS time_slot;
+
+CREATE TABLE time_slot(
+    time_slotID INT AUTO_INCREMENT,
+    day  VARCHAR(40) CHECK (day in ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
+    start_time TIME,
+    end_time TIME,
+    PRIMARY KEY  (time_slotID)
+);
+
+
+DROP TABLE IF EXISTS booking;
+
+# CREATE TABLE booking(
+#     bookingID INT AUTO_INCREMENT,
+#     memberID INT,
+#     facilityID INT,
+#
+# )
+
+
+
+
+
 
 
 DROP TABLE IF EXISTS equipment;
