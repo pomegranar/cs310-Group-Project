@@ -17,13 +17,16 @@ conn = mysql.connector.connect(
 
 cursor = conn.cursor()
 
-# Create database if it doesn't exist
-cursor.execute("CREATE DATABASE IF NOT EXISTS sports_complex")
-cursor.execute("USE sports_complex")
+with open('queries/new_schema.sql', 'r', encoding='utf-8') as schema:
+    sql_script = schema.read()
+cursor.execute(sql_script, multi=True)
+cursor.close()
 
-# Create ALL tables in queries/init_tables.sql
-with open('queries/init_tables.sql', 'r', encoding='utf-8') as sql_file:
-    sql_script = sql_file.read()
+
+cursor = conn.cursor()
+
+with open('queries/fill_data.sql', 'r', encoding='utf-8') as schema:
+    sql_script = schema.read()
 cursor.execute(sql_script, multi=True)
 cursor.close()
 

@@ -5,11 +5,12 @@ USE sports;
 CREATE TABLE user (
     user_id 		INT PRIMARY KEY AUTO_INCREMENT,
 	netid 			VARCHAR(10) UNIQUE,
+	card_number		VARCHAR(20) UNIQUE,
     first_name 		VARCHAR(50) NOT NULL,
     last_name 		VARCHAR(50),
     gender			ENUM('male', 'female', 'other', 'undisclosed'),
     birthday 		DATE, -- Age will be dynamically calculated in queries since it's a derived attribute.
-    member_status 	BOOLEAN DEFAULT FALSE
+    role 			ENUM('student', 'faculty', 'staff', 'worker', 'student_worker', 'affiliate', 'alumni', 'guest', 'security', 'other')
 );
 
 CREATE TABLE contact (

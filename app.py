@@ -19,7 +19,7 @@ def get_db_connection():
         host="localhost",
         user="root",  # Replace with your MySQL username
         password=password,
-        database="sports_complex"
+        database="sports"
     )
 
 
@@ -36,11 +36,11 @@ def get_equipment():
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT s.name, e.name, e.number
+        SELECT s.name AS sport, e.name, e.number, e.equipment_id
         FROM equipment e
         JOIN sport s ON e.sport_id = s.sport_id
-        LEFT JOIN borrowed b ON e.equipment_id = b.equipment_id
-        WHERE b.returned_on IS NULL;
+        LEFT OUTER JOIN borrowed b ON e.equipment_id = b.equipment_id
+        WHERE b.equipment_id IS NULL OR b.returned_on IS NOT NULL;
         """)
 
     equipment = cursor.fetchall()
@@ -53,27 +53,25 @@ def get_equipment():
 
 @app.route('/checkout_equipment', methods=['POST'])
 def checkout_equipment():
+    # TODO: Add check for penalties!!
     """API endpoint for checking out equipment"""
     data = request.json
 
-    card_id = data['cardID']
-    equipment_id = data['equipmentID']
+    card_number = data['card_number']
+    equipment_id = data['equipment_id']
 
     conn = get_db_connection()
 
     cursor = conn.cursor()
 
-    # Update equipment table with checkout details
+    # Add to borrowed table with checkout details
     cursor.execute("""
-        UPDATE equipment
-        SET checked_out_user_id = (SELECT user_id FROM users WHERE card = %s),
-            checkout_time = NOW(),
-            due_when = NOW() + INTERVAL 1 DAY
-        WHERE equipment_ID = %s AND checked_out_user_id IS NULL;
-        """, (card_id, equipment_id))
+        INSERT INTO borrowed (user_id, equipment_id)
+        VALUES ((SELECT user_id FROM user WHERE card_number = %s), %s);
+        """, (card_number, equipment_id))
 
     if cursor.rowcount == 0:
-        message = "Equipment already checked out or invalid."
+        message = "Equipment already checked out, or invalid."
         status = "error"
 
     else:
@@ -84,7 +82,7 @@ def checkout_equipment():
         # Log activity to CSV file
         with open('activity_log.csv', mode='a', encoding='utf-8') as file:
             file.write(
-                f"Checkout,Card ID: {card_id},Equipment ID: {equipment_id}\n")
+                f"Checkout,Card number: {card_number},Equipment ID: {equipment_id}\n")
 
     cursor.close()
 

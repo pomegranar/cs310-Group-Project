@@ -8,13 +8,13 @@
 </head>
 <body>
    <h1>Sports Complex Inventory Management System</h1>
-   
+
    <form id="checkOutForm">
-      <label for="cardID">Card ID:</label>
-      <input type="text" id="cardID" name="cardID" autofocus required>
+      <label for="card_id">Tap card:</label>
+      <input type="text" id="card_id" name="card_id" autofocus required>
 
       <label for="equipment">Select Equipment:</label>
-      <select id="equipment" name="equipment">
+      <select id="equipment" name="equipment" required>
          <!-- Options will be populated dynamically -->
       </select>
 
@@ -24,33 +24,40 @@
    <script>
       document.addEventListener('DOMContentLoaded', function() {
          const equipmentSelect = document.getElementById('equipment');
-         
-         // Fetch equipment data from server and populate options dynamically.
+
+         // Fetch equipment data from the server and populate options dynamically.
          fetch('/get_equipment')
             .then(response => response.json())
             .then(data => {
-               data.forEach(equipment => {
+               data.forEach(e => { // Corrected variable usage.
                   const option = document.createElement('option');
-                  option.value = equipment.Equipment_ID;
-                  option.textContent = `${equipment.Sport} - ${equipment.Name}`;
+                  option.value = e.equipment_id; // Assuming the server returns `equipment_id`.
+                  option.textContent = `${e.sport} - ${e.name} #${e.number}`;
                   equipmentSelect.appendChild(option);
                });
-            });
+            })
+            .catch(error => console.error('Error fetching equipment data:', error)); // Added error handling.
 
          document.getElementById('checkOutForm').addEventListener('submit', function(event) {
             event.preventDefault();
-            
-            const cardID = document.getElementById('cardID').value;
-            const equipmentID = document.getElementById('equipment').value;
+
+            const card_number = document.getElementById('card_id').value; // Corrected ID to match `card_id`.
+            const equipment_id = document.getElementById('equipment').value;
 
             fetch('/checkout_equipment', {
                method: 'POST',
                headers: { 'Content-Type': 'application/json' },
-               body: JSON.stringify({ cardID: cardID, equipmentID: equipmentID })
+               body: JSON.stringify({ card_number: card_number, equipment_id: equipment_id })
             })
             .then(response => response.json())
-            .then(data => alert(data.message))
-            .catch(error => console.error('Error:', error));
+            .then(data => {
+               if (data.success) {
+                  alert(data.message);
+               } else {
+                  alert(`Error: ${data.message}`);
+               }
+            })
+            .catch(error => console.error('Error submitting form:', error)); // Added error handling.
          });
       });
    </script>
