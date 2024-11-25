@@ -9,7 +9,6 @@ CREATE TABLE user (
     last_name 		VARCHAR(50),
     gender			ENUM('male', 'female', 'other', 'undisclosed'),
     birthday 		DATE, -- Age will be dynamically calculated in queries since it's a derived attribute.
-    -- emergency_contact VARCHAR(255), -- Emergency contact can simply be a long varchar or text since only real humans will read it anyways.
     member_status 	BOOLEAN DEFAULT FALSE
 );
 
@@ -54,12 +53,6 @@ CREATE TABLE subscription (
     FOREIGN KEY (sport_id) REFERENCES sport(sport_id)
 );
 
--- CREATE TABLE instructor (
---     instructor_id 	INT PRIMARY KEY AUTO_INCREMENT,
---     name 			VARCHAR(100),
---     contact_info 	VARCHAR(255)
--- );
-
 CREATE TABLE facility (
     facility_id INT PRIMARY KEY AUTO_INCREMENT,
     name 		VARCHAR(100) NOT NULL,
@@ -102,8 +95,8 @@ CREATE TABLE borrowed (
     user_id 		INT,
     equipment_id 	INT,
     borrow_date 	DATETIME DEFAULT CURRENT_TIMESTAMP,
-    return_date 	DATETIME DEFAULT CURRENT_TIMESTAMP,
-    last_returned	DATETIME,
+    due_date 		DATETIME DEFAULT CURRENT_TIMESTAMP,
+    returned_on		DATETIME DEFAULT NULL,
     FOREIGN KEY (user_id) REFERENCES user(user_id),
     FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id)
 );

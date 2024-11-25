@@ -35,8 +35,13 @@ def get_equipment():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute(
-        "SELECT Equipment_ID, Sport, Name FROM sports_complex.Equipment")
+    cursor.execute("""
+        SELECT s.name, e.name, e.number
+        FROM equipment e
+        JOIN sport s ON e.sport_id = s.sport_id
+        LEFT JOIN borrowed b ON e.equipment_id = b.equipment_id
+        WHERE b.returned_on IS NULL;
+        """)
 
     equipment = cursor.fetchall()
 
