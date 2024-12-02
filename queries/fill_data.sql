@@ -1,5 +1,3 @@
-USE sports;
-
 INSERT INTO user (netid, card_number, first_name, last_name, gender, birthday, role) VALUES
 ('an301', '11223344', 'Anar', 'Nyambayar', 'male', '2005-01-01', 'student'),
 ('aa846', '32134243', 'Avidikhuu', 'Altangerel', 'male', '2005-11-01', 'student'),

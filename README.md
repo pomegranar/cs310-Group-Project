@@ -1,7 +1,61 @@
-# DKU CS310 Group Project
+# DKU Sports Complex Database
 A group project for the Computer Science 310 – Introduction to Databases course at Duke Kunshan University.
 
 Team members are: Anar, Doniyor, Sean
+
+# How to Install & Run:
+## 1. How to Get Started
+### Cloning the Repo
+
+```bash
+git clone https://github.com/pomegranar/cs310-Group-Project.git
+```
+### Dependencies
+Assuming you have the latest versions of Python and MySQL installed, we recommend you set up a Python **virtual environment** to isolate dependencies.
+
+```bash
+python -m venv venv
+```
+You can then *activate* it with the following command:
+
+on macOS/Linux:
+
+```bash
+source venv/bin/activate
+```
+on Windows:
+
+```bash
+.\venv\Scripts\activate
+```
+After you *activate* the virtual environment, you can run the following command to tell Pip to download the necessary libraries:
+
+```bash
+pip install -r requirements.txt
+```
+
+You can peek into `requirements.txt` to see all dependencies if you wish. 
+
+## 2. Set Up the Database
+Once you get MySQL running, you can run the following SQL commands from the project folder to initialize and populate the database:
+
+```MySQL
+SOURCE queries/new_schema.sql;
+```
+
+```MySQL
+SOURCE queries/fill_data.sql;
+```
+
+## 3. Run app.py
+After all the setup is complete, just run the following:
+
+```bash
+python app.py
+```
+which will prompt you for your database password and start the local site on port 5000.
+
+# Development:
 
 ## Timeline
 - [x] 28/10: project topic approval deadline.
@@ -15,7 +69,12 @@ Team members are: Anar, Doniyor, Sean
 	- [ ] Saving logs as a JSON file.
 	- [ ] Space reservations (+schedule conflict checks via trigger).
 	- [ ] Class registration/check-in.
+
+HW4:
 - [ ] Design E-R model with ER diagram.
+- [ ] Define attributes for each table.
+- [ ]
+
 - [ ] Init Report (add the diagram).
 - [ ] Refactor database schema to fit the new E-R model.
 - [ ] Fill new tables.

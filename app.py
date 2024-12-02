@@ -5,6 +5,7 @@ Try not to edit this.
 
 import getpass
 # import json
+# import simplejson as json
 import mysql.connector
 from flask import Flask, render_template, request, jsonify
 
@@ -16,8 +17,8 @@ app = Flask(__name__)
 def get_db_connection():
     """CONNECTING TO THE DATABASE."""
     return mysql.connector.connect(
-        host="localhost",
-        user="root",  # Replace with your MySQL username
+        # host="localhost",
+        user="root",
         password=password,
         database="sports"
     )

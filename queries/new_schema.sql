@@ -93,8 +93,8 @@ CREATE TABLE equipment (
 
 CREATE TABLE borrowed (
     borrow_id 		INT PRIMARY KEY AUTO_INCREMENT,
-    user_id 		INT,
-    equipment_id 	INT,
+    user_id 		INT NOT NULL,
+    equipment_id 	INT NOT NULL,
     borrow_date 	DATETIME DEFAULT CURRENT_TIMESTAMP,
     due_date 		DATETIME DEFAULT CURRENT_TIMESTAMP,
     returned_on		DATETIME DEFAULT NULL,
