@@ -1,3 +1,12 @@
+:root {
+   --theme-blue: #228CDB;
+   --theme-indigo: #0b5e9e;
+   --dark-blue: #0D1F2D;
+   --sea-green: #3E885B;
+   --white-smoke: #F2F2F2;
+   --silver: #CCCCCC;
+}
+
 body {
    font-family: Arial, sans-serif;
 }
@@ -6,7 +15,14 @@ h1 {
    text-align: center;
 }
 
+h3 {
+   text-align: left;
+   margin-left: 20px;
+   font-style: italic;
+}
+
 form {
+   display: block;
    max-width: 400px;
    margin: auto;
 }
@@ -18,5 +34,39 @@ label, input, select {
 }
 
 button {
-   width: 100%;
+   display: block;
+   margin-left: auto;
+   margin-right: auto;
+   width: 50%;
+   border-radius: 30px;
+   border: 0;
+   padding: 10px 0 10px 0;
+   background-color: var(--sea-green);
+   color: white;
+   font-size: large;
+}
+
+.tabBar {
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+}
+
+.tabButton, .tabButton a {
+   border-radius: 0;
+   margin: 0;
+   background-color: var(--theme-blue);
+   color: white;
+   font-size: small;
+   font-weight: normal;
+   text-decoration: none;
+   font-style: normal;
+}
+
+.current{
+   color: white;
+   font-style: italic;
+   font-weight: bolder;
+   background-color: var(--theme-indigo);
 }

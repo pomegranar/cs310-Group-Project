@@ -7,7 +7,14 @@
    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-   <h1>Sports Complex Inventory Management System</h1>
+   <h3 class="appName">DKU Sports Complex DB</h3>
+
+   <div class="tabBar">
+      <button class="tabButton current">Equipment Check-Out</button>
+      <button class="tabButton"><a href=fetch('/reserve')>Facility Reservations</a></button>
+   </div>
+
+   <h1>Equipment Check-Out</h1>
 
    <form id="checkOutForm">
       <label for="card_id">Tap card:</label>
