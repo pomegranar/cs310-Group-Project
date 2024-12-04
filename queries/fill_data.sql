@@ -32,3 +32,7 @@ INSERT INTO equipment (sport_id, name, number) VALUES
 (12, 'shoes-40', 2),
 (12, 'shoes-36', 1),
 (12, 'shoes-36', 2);
+
+INSERT INTO facility (name, reservable, floor) VALUES
+('Basketball Court', TRUE, 1),
+('Tennis Court', TRUE, 1);

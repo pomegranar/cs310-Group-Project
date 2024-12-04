@@ -11,6 +11,18 @@ body {
    font-family: Arial, sans-serif;
 }
 
+.grid {
+   display: flex;
+   flex-direction: row;
+   flex-basis: auto;
+}
+
+.section {
+   display: block;
+   padding: 20px;
+   margin: 20px;
+}
+
 h1 {
    text-align: center;
 }

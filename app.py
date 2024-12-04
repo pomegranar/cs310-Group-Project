@@ -90,5 +90,41 @@ def checkout_equipment():
     return jsonify({"message": message, "status": status})
 
 
+@app.route('/reserve_facility', methods=['POST'])
+def reserve_facility():
+    """API endpoint for reserving a facility"""
+    data = request.json
+
+    card_number = data['card_number']
+    facility_id = data['facility_id']
+    reserve_date = data['reserve_date']
+    start_time = data['start_time']
+    end_time = data['end_time']
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("""
+            CALL reserve_facility(
+                (SELECT user_id FROM user WHERE card_number = %s),
+                %s, %s, %s, %s
+            );
+            """, (card_number, facility_id, reserve_date, start_time, end_time))
+
+        conn.commit()
+        message = "Reservation successful."
+        status = "success"
+
+    except mysql.connector.Error as err:
+        message = err.msg
+        status = "error"
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({"message": message, "status": status})
+
+
 if __name__ == '__main__':
     app.run(debug=True)
