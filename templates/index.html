@@ -11,51 +11,22 @@
 
    <div class="tabBar">
       <button class="tabButton current">Equipment Check-Out</button>
-      <button class="tabButton"><a href="/reserve">Facility Reservations</a>
+      <button class="tabButton"><a href="/reserve">Facility Reservations</a></button>
    </div>
-   <div class="grid">
-      <div class="section">
-      <h1>Equipment Check-Out</h1>
 
-      <form id="checkOutForm">
-         <label for="card_id">Tap card:</label>
-         <input type="text" id="card_id" name="card_id" autofocus required>
+   <h1>Equipment Check-Out</h1>
 
-         <label for="equipment">Select Equipment:</label>
-         <select id="equipment" name="equipment" required>
-            <!-- Options will be populated dynamically -->
-         </select>
+   <form id="checkOutForm">
+      <label for="card_id">Tap card:</label>
+      <input type="text" id="card_id" name="card_id" autofocus required>
 
-         <button type="submit">Check Out</button>
-      </form>
-      </div>
-      <div class="section">
-         <h1>Reserve a Facility</h1>
-         <form id="reservationForm">
-            <label for="cardNumber">Card Number:</label>
-            <input type="text" id="cardNumber" required><br>
+      <label for="equipment">Select Equipment:</label>
+      <select id="equipment" name="equipment" required>
+         <!-- Options will be populated dynamically -->
+      </select>
 
-            <label for="facilityId">Facility:</label>
-            <select id="facilityId" required>
-               <option value="1">Basketball Court</option>
-               <option value="2">Tennis Court</option>
-            </select><br>
-
-            <label for="reserveDate">Date:</label>
-            <input type="date" id="reserveDate" required><br>
-
-            <label for="startTime">Start Time:</label>
-            <input type="time" id="startTime" required><br>
-
-            <label for="endTime">End Time:</label>
-            <input type="time" id="endTime" required><br>
-
-            <button type="submit">Reserve</button>
-         </form>
-
-         <p id="result"></p>
-      </div>
-   </div>
+      <button type="submit">Check Out</button>
+   </form>
 
    <script>
       document.addEventListener('DOMContentLoaded', function() {
