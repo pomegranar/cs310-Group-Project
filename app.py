@@ -89,6 +89,9 @@ def checkout_equipment():
 
     return jsonify({"message": message, "status": status})
 
+@app.route('/reserve')
+def reserve():
+    return render_template('reserve.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
