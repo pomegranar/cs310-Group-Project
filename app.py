@@ -89,6 +89,9 @@ def checkout_equipment():
 
     return jsonify({"message": message, "status": status})
 
+@app.route('/reserve')
+def reserve():
+    return render_template('reserve.html')
 
 @app.route('/reserve_facility', methods=['POST'])
 def reserve_facility():
