@@ -63,6 +63,52 @@
 				<div class="col-md-6">
 					<!-- Equipment Check-Out Form -->
 					<form id="checkOutForm" class="p-4 border rounded shadow">
+						<div id="qr-scanner">
+							<video id="qr-video" style="width: 100%"></video>
+							<button id="start-scan">Start Scanning</button>
+						</div>
+						<script src="https://unpkg.com/html5-qrcode/minified/html5-qrcode.min.js"></script>
+						<script>
+							const video = document.getElementById("qr-video");
+							const startScanButton = document.getElementById("start-scan");
+
+							startScanButton.addEventListener("click", () => {
+								const html5QrCode = new Html5Qrcode("qr-video");
+								html5QrCode
+									.start(
+										{ facingMode: "environment" }, // Rear camera
+										{
+											fps: 10, // Scans per second
+											qrbox: 250, // Box size for the QR code scanner
+										},
+										(qrCodeMessage) => {
+											console.log("Scanned QR code:", qrCodeMessage);
+
+											// Send equipment ID (scanned QR code) to the backend
+											fetch("/checkout_equipment", {
+												method: "POST",
+												headers: {
+													"Content-Type": "application/json",
+												},
+												body: JSON.stringify({
+													card_number: "112233", // Replace with actual card number
+													equipment_id: qrCodeMessage,
+												}),
+											})
+												.then((response) => response.json())
+												.then((data) => alert(data.message))
+												.catch((err) => console.error(err));
+
+											html5QrCode.stop();
+										},
+										(errorMessage) => {
+											console.warn("QR code scanning failed:", errorMessage);
+										}
+									)
+									.catch((err) => console.error(err));
+							});
+						</script>
+						<div id="reader" style="width: 300px"></div>
 						<div class="mb-3">
 							<label for="card_id" class="form-label">Tap Card:</label>
 							<input type="text" id="card_id" name="card_id" class="form-control" placeholder="Enter your card ID" required />
@@ -74,6 +120,21 @@
 							</select>
 						</div>
 						<button type="submit" class="btn btn-primary w-100">Check Out</button>
+
+						<script src="https://cdn.jsdelivr.net/npm/html5-qrcode/minified/html5-qrcode.min.js"></script>
+						<script>
+							const html5QrCode = new Html5Qrcode("reader");
+							html5QrCode.start({ facingMode: "environment" }, { fps: 10 }, (decodedText) => {
+								// Send decoded text to Flask
+								fetch("/scan", {
+									method: "POST",
+									headers: { "Content-Type": "application/json" },
+									body: JSON.stringify({ code: decodedText }),
+								})
+									.then((response) => response.json())
+									.then((data) => console.log(data));
+							});
+						</script>
 					</form>
 				</div>
 			</div>
@@ -92,51 +153,7 @@
 		<!-- Bootstrap JS -->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
-		<script>
-			document.addEventListener("DOMContentLoaded", function () {
-				const equipmentSelect = document.getElementById("equipment");
-
-				// Fetch equipment data from the server and populate options dynamically.
-				fetch("/get_equipment")
-					.then((response) => response.json())
-					.then((data) => {
-						data.forEach((e) => {
-							const option = document.createElement("option");
-							option.value = e.equipment_id;
-							option.textContent = `${e.sport} - ${e.name} #${e.number}`;
-							equipmentSelect.appendChild(option);
-						});
-					})
-					.catch((error) => console.error("Error fetching equipment data:", error));
-
-				// Form submission for check-out
-				document.getElementById("checkOutForm").addEventListener("submit", function (event) {
-					event.preventDefault();
-
-					const card_number = document.getElementById("card_id").value;
-					const equipment_id = document.getElementById("equipment").value;
-
-					fetch("/checkout_equipment", {
-						method: "POST",
-						headers: { "Content-Type": "application/json" },
-						body: JSON.stringify({ card_number: card_number, equipment_id: equipment_id }),
-					})
-						.then((response) => response.json())
-						.then((data) => {
-							const result = document.getElementById("result");
-							result.classList.remove("d-none");
-							result.classList.add(data.success ? "alert-success" : "alert-danger");
-							result.textContent = data.message;
-						})
-						.catch((error) => {
-							const result = document.getElementById("result");
-							result.classList.remove("d-none");
-							result.classList.add("alert-danger");
-							result.textContent = "An error occurred. Please try again.";
-							console.error("Error submitting form:", error);
-						});
-				});
-			});
-		</script>
+		<!-- Main JS stuff. -->
+		<script src="../static/main.js"></script>
 	</body>
 </html>

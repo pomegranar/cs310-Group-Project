@@ -89,9 +89,11 @@ def checkout_equipment():
 
     return jsonify({"message": message, "status": status})
 
+
 @app.route('/reserve')
 def reserve():
     return render_template('reserve.html')
+
 
 @app.route('/reserve_facility', methods=['POST'])
 def reserve_facility():
@@ -127,6 +129,35 @@ def reserve_facility():
     conn.close()
 
     return jsonify({"message": message, "status": status})
+
+
+@app.route('/get_equipment_details', methods=['POST'])
+def get_equipment_details():
+    """Fetch equipment details by scanned QR code."""
+    data = request.json
+    equipment_id = data.get('equipment_id')
+
+    if not equipment_id:
+        return jsonify({"status": "error", "message": "No equipment ID provided"})
+
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT e.name, s.name AS sport, e.equipment_id
+        FROM equipment e
+        JOIN sport s ON e.sport_id = s.sport_id
+        WHERE e.equipment_id = %s;
+    """, (equipment_id,))
+
+    equipment = cursor.fetchone()
+    cursor.close()
+    conn.close()
+
+    if equipment:
+        return jsonify({"status": "success", "equipment": equipment})
+    else:
+        return jsonify({"status": "error", "message": "Equipment not found or unavailable"})
 
 
 if __name__ == '__main__':
