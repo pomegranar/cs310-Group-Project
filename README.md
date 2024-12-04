@@ -70,11 +70,19 @@ which will prompt you for your database password and start the local site on por
 	- [ ] Space reservations (+schedule conflict checks via trigger).
 	- [ ] Class registration/check-in.
 
-HW4:
+# Project Presentation 
+https://www.canva.com/design/DAGYVWdw728/etnBaLe7sTOUbEIrf3ecmw/edit?utm_content=DAGYVWdw728&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
+
+
+# Project Report
+Overleaf link: 
+https://www.overleaf.com/6913953676czmjhfqhybgb#6d925c
+
+
+
+# HW4:
 - [ ] Design E-R model with ER diagram.
 - [ ] Define attributes for each table.
-- [ ]
-
 - [ ] Init Report (add the diagram).
 - [ ] Refactor database schema to fit the new E-R model.
 - [ ] Fill new tables.
@@ -84,7 +92,8 @@ HW4:
 
 # Database Design:
 Sports Complex IMS Database Design Document
-Google Docs link with edit access: https://docs.google.com/document/d/1gv8seOHcQIo4mhCA1abxsu-VML-hen7Qq4Lq1JHkTHk/edit?usp=sharing
+Google Docs link with edit access: 
+https://docs.google.com/document/d/1gv8seOHcQIo4mhCA1abxsu-VML-hen7Qq4Lq1JHkTHk/edit?usp=sharing
 
 ## Tables
 - [ ] Users
@@ -121,9 +130,7 @@ Google Docs link with edit access: https://docs.google.com/document/d/1gv8seOHcQ
 ## Collaborative Google Doc Link:
 https://docs.google.com/document/d/1d3XCcXY8Gzw8mQ4DGygr_bhmYVCxuQA_0WF4ub9iIrc/edit?usp=sharing
 
-
 # Project Proposal (Finished and approved)
 Google Doc link (anyone with the link can edit):
 https://docs.google.com/document/d/1NMYmtUHWWL7xNTXi5h011cDegPWQqB8o7CllejP9p8k/edit?usp=sharing
-
 
