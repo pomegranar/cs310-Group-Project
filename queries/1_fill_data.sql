@@ -1,8 +1,8 @@
 INSERT INTO user (netid, card_number, first_name, last_name, gender, birthday, role) VALUES
-('an301', '11223344', 'Anar', 'Nyambayar', 'male', '2005-01-01', 'student'),
+('an301', '112233', 'Anar', 'Nyambayar', 'male', '2005-01-01', 'student'),
 ('aa846', '32134243', 'Avidikhuu', 'Altangerel', 'male', '2005-11-01', 'student'),
-('srb94', '56789123', 'Sean', 'Bugarin', 'male', '2004-08-11', 'student'),
-('de82', '98689548', 'Doniyor', 'Erkinov', 'other', '2003-11-01', 'student');
+('srb94', '696969', 'Sean', 'Bugarin', 'male', '2004-08-11', 'student'),
+('de82', '420420', 'Doniyor', 'Erkinov', 'male', '2003-11-01', 'student');
 
 INSERT INTO sport (name) VALUES
 ('Basketball'),
