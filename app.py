@@ -34,7 +34,7 @@ def get_equipment():
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("""--sql
+    cursor.execute("""
         SELECT s.name AS sport, e.name, e.number, e.equipment_id
         FROM equipment e
         JOIN sport s ON e.sport_id = s.sport_id
@@ -64,7 +64,7 @@ def checkout_equipment():
     cursor = conn.cursor()
 
     # Add to borrowed table with checkout details
-    cursor.execute("""--sql
+    cursor.execute("""
         INSERT INTO borrowed (user_id, equipment_id)
         VALUES ((SELECT user_id FROM user WHERE card_number = %s), %s);
         """, (card_number, equipment_id))
