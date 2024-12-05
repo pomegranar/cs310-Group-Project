@@ -39,7 +39,8 @@ def get_equipment():
         FROM equipment e
         JOIN sport s ON e.sport_id = s.sport_id
         LEFT OUTER JOIN borrowed b ON e.equipment_id = b.equipment_id
-        WHERE b.equipment_id IS NULL OR b.returned_on IS NOT NULL;
+        WHERE b.equipment_id IS NULL OR b.returned_on IS NOT NULL
+        ORDER BY s.name;
         """)
 
     equipment = cursor.fetchall()
@@ -66,8 +67,8 @@ def checkout_equipment():
     # Add to borrowed table with checkout details
     cursor.execute("""
         INSERT INTO borrowed (user_id, equipment_id)
-        VALUES ((SELECT user_id FROM user WHERE card_number = %s), %s);
-        """, (card_number, equipment_id))
+        VALUES ((SELECT user_id FROM user WHERE (card_number = %s OR netid = %s)), %s);
+        """, (card_number, card_number, equipment_id))
 
     if cursor.rowcount == 0:
         message = "Equipment already checked out, or invalid."
@@ -89,14 +90,39 @@ def checkout_equipment():
 
     return jsonify({"message": message, "status": status})
 
+
+@app.route('/get_facility')
+def get_facility():
+    """API endpoint to get facilities data (for populating the dropdown)"""
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    cursor.execute("""
+        SELECT facility_id, name, floor, reservable
+        FROM facility
+        WHERE reservable = TRUE;
+    """)
+
+    facilities = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
+    return jsonify(facilities)
+
+
 @app.route('/reserve')
 def reserve():
+    """Renders the reservation page"""
     return render_template('reserve.html')
+
 
 @app.route('/reserve_facility', methods=['POST'])
 def reserve_facility():
     """API endpoint for reserving a facility"""
     data = request.json
+
+    if not all(key in data for key in ['card_number', 'facility_id', 'reserve_date', 'start_time', 'end_time']):
+        return jsonify({"message": "Invalid request data.", "status": "error"}), 400
 
     card_number = data['card_number']
     facility_id = data['facility_id']
@@ -110,23 +136,25 @@ def reserve_facility():
     try:
         cursor.execute("""
             CALL reserve_facility(
-                (SELECT user_id FROM user WHERE card_number = %s),
+                (SELECT user_id FROM user WHERE card_number = %s OR netid = %s),
                 %s, %s, %s, %s
             );
-            """, (card_number, facility_id, reserve_date, start_time, end_time))
+        """, (card_number, card_number, facility_id, reserve_date, start_time, end_time))
 
         conn.commit()
         message = "Reservation successful."
         status = "success"
 
     except mysql.connector.Error as err:
-        message = err.msg
+        message = f"Database Error: {err.msg}"
         status = "error"
+        print(f"Database Error: {err.msg}")  # Debugging purposes
 
     cursor.close()
     conn.close()
 
     return jsonify({"message": message, "status": status})
+
 
 
 if __name__ == '__main__':

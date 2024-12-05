@@ -50,9 +50,9 @@
 		<div class="container-fluid py-3 bg-light">
 			<div class="d-flex justify-content-between align-items-center">
 				<!-- Left Logo -->
-				<img src="/static/DKU_logo.png" alt="Left Logo" class="logo-left" />
+				<img src="/static/DKU_logo.png" alt="DKU Logo" class="logo-left" />
 				<!-- Right Logo -->
-				<img src="/static/Athletics_logo.png" alt="Right Logo" class="logo-right" />
+				<img src="/static/Athletics_logo.png" alt="Athletics Logo" class="logo-right" />
 			</div>
 		</div>
 
@@ -69,9 +69,8 @@
 						</div>
 						<div class="mb-3">
 							<label for="facilityId" class="form-label">Facility:</label>
-							<select id="facilityId" class="form-select" required>
-								<option value="1">Basketball Court</option>
-								<option value="2">Tennis Court</option>
+							<select id="facilityId" name="facility" title="facility" class="form-select" required>
+								<!-- Options will be populated dynamically -->
 							</select>
 						</div>
 						<div class="mb-3">
@@ -125,8 +124,25 @@
 				const result = await response.json();
 				const resultAlert = document.getElementById("result");
 				resultAlert.classList.remove("d-none");
-				resultAlert.classList.add(result.success ? "alert-success" : "alert-danger");
+				resultAlert.classList.add(result.status === "success" ? "alert-success" : "alert-danger");
 				resultAlert.textContent = result.message;
+			});
+
+			document.addEventListener("DOMContentLoaded", function () {
+				const facilitySelect = document.getElementById("facilityId");
+
+				// Fetch facility data from the server and populate options dynamically.
+				fetch("/get_facility")
+					.then((response) => response.json())
+					.then((data) => {
+						data.forEach((facility) => {
+							const option = document.createElement("option");
+							option.value = facility.facility_id;
+							option.textContent = `Floor ${facility.floor}: ${facility.name} (Available: ${facility.reservable ? "Yes" : "No"})`;
+							facilitySelect.appendChild(option);
+						});
+					})
+					.catch((error) => console.error("Error fetching facility data:", error));
 			});
 		</script>
 	</body>
