@@ -45,12 +45,6 @@ INSERT INTO equipment (sport_id, name, number) VALUES
 (7, 'racquet', 3),
 (7, 'racquet', 4);
 
-
-INSERT INTO equipment (equipment_id, name, number, admin_note, sport_id) VALUES
-(3, 'ball', 3, NULL, 1);
-
-DELETE FROM equipment where equipment_id=3;
-
 INSERT INTO facility (name, reservable, floor) VALUES
 ('Basketball Court', TRUE, 1),
 ('Tennis Court', TRUE, 1),

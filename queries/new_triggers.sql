@@ -6,7 +6,7 @@ USE sports;
 -- DROP TRIGGER prevent_borrowed_equipment_borrow;
 
 
-## TRIGGER to apply penalty for users who hasn't returned the borrowed equipment
+-- TRIGGER to apply penalty for users who hasn't returned the borrowed equipment
 DELIMITER $$
 
 CREATE TRIGGER apply_penalty_overdue_equipment
@@ -105,12 +105,4 @@ DELETE FROM penalty;
 
 INSERT INTO borrowed(user_id, equipment_id, borrow_date, due_date, returned_on)
 VALUES(4, 6, '2024-12-04', '2024-12-05', NULL);
-
-
-SELECT * FROM penalty;
-
-SELECT * FROM borrowed;
-
-SELECT * FROM equipment;
-
 
