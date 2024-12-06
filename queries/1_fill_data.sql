@@ -1,3 +1,5 @@
+USE sports;
+
 INSERT INTO user (netid, card_number, first_name, last_name, gender, birthday, role) VALUES
 ('an301', '112233', 'Anar', 'Nyambayar', 'male', '2005-01-01', 'student'),
 ('srb94', '696969', 'Sean', 'Bugarin', 'male', '2004-08-11', 'student'),
@@ -42,6 +44,12 @@ INSERT INTO equipment (sport_id, name, number) VALUES
 (7, 'racquet', 2),
 (7, 'racquet', 3),
 (7, 'racquet', 4);
+
+
+INSERT INTO equipment (equipment_id, name, number, admin_note, sport_id) VALUES
+(3, 'ball', 3, NULL, 1);
+
+DELETE FROM equipment where equipment_id=3;
 
 INSERT INTO facility (name, reservable, floor) VALUES
 ('Basketball Court', TRUE, 1),

@@ -47,21 +47,37 @@ CREATE TABLE
         FOREIGN KEY (user_id) REFERENCES user(user_id)
     );
 
-CREATE TABLE
-    penalty (
-        penalty_id 	INT PRIMARY KEY AUTO_INCREMENT,
-        user_id 	INT,
-        fee 		DECIMAL(10, 2),
-        reason 		TEXT,
-        issued_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES user(user_id)
-    );
 
 CREATE TABLE
     sport (
         sport_id 	INT PRIMARY KEY AUTO_INCREMENT,
         name 		VARCHAR(200)
     );
+
+
+CREATE TABLE
+    equipment (
+        equipment_id INT PRIMARY KEY AUTO_INCREMENT,
+        name 		VARCHAR(100) NOT NULL,
+        number 		INT CHECK (number >= 0), -- i.e. Ball #2, Ball #6, Bike #3
+        equipment_availability ENUM('available', 'borrowed', 'not returned on time') DEFAULT 'available',
+        admin_note 	TEXT,
+        sport_id 	INT,
+        FOREIGN KEY (sport_id) REFERENCES sport (sport_id)
+    );
+
+
+CREATE TABLE
+    penalty (
+        penalty_id 	INT PRIMARY KEY AUTO_INCREMENT,
+        user_id 	INT,
+        fee 		DECIMAL(10, 2),
+        equipment_id 		INT,
+        issued_date DATETIME DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES user(user_id),
+        FOREIGN KEY (equipment_id) REFERENCES equipment(equipment_id)
+    );
+
 
 CREATE TABLE
     subscription (
@@ -73,6 +89,7 @@ CREATE TABLE
         FOREIGN KEY (sport_id) REFERENCES sport (sport_id)
     );
 
+
 CREATE TABLE
     facility (
         facility_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -80,6 +97,7 @@ CREATE TABLE
         reservable 	BOOLEAN NOT NULL,
         floor 		INT NOT NULL
     );
+
 
 CREATE TABLE
     class (
@@ -92,6 +110,7 @@ CREATE TABLE
         FOREIGN KEY (instructor_id) REFERENCES user(user_id),
         FOREIGN KEY (location) REFERENCES facility (facility_id)
     );
+
 
 CREATE TABLE
     reservation (
@@ -106,15 +125,6 @@ CREATE TABLE
         CONSTRAINT unique_reservation UNIQUE (facility_id, reserve_date, start_time, end_time)
     );
 
-CREATE TABLE
-    equipment (
-        equipment_id INT PRIMARY KEY AUTO_INCREMENT,
-        name 		VARCHAR(100) NOT NULL,
-        number 		INT CHECK (number >= 0), -- i.e. Ball #2, Ball #6, Bike #3
-        admin_note 	TEXT,
-        sport_id 	INT,
-        FOREIGN KEY (sport_id) REFERENCES sport (sport_id)
-    );
 
 CREATE TABLE
     borrowed (
@@ -127,6 +137,7 @@ CREATE TABLE
         FOREIGN KEY (user_id) REFERENCES user(user_id),
         FOREIGN KEY (equipment_id) REFERENCES equipment (equipment_id)
     );
+
 
 CREATE TABLE
     notification (
