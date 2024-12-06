@@ -27,22 +27,22 @@ CREATE TRIGGER apply_penalty_overdue_equipment
 DELIMITER ;
 
 
-## TRIGGER to avoid imposing multiple penalty fees for a user who already has that penalty
-DELIMITER $$
+-- ## TRIGGER to avoid imposing multiple penalty fees for a user who already has that penalty
+-- DELIMITER $$
 
-CREATE TRIGGER prevent_duplicate_borrow
-    BEFORE INSERT ON borrowed
-    FOR EACH ROW
-    BEGIN
-        IF EXISTS(
-            SELECT borrow_id FROM borrowed
-            WHERE user_id= NEW.user_id AND equipment_id= NEW.equipment_id
-                ) THEN SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT= 'User already has a penalty for this equipment';
-            END IF;
-    END $$
+-- CREATE TRIGGER prevent_duplicate_borrow
+--     BEFORE INSERT ON borrowed
+--     FOR EACH ROW
+--     BEGIN
+--         IF EXISTS(
+--             SELECT borrow_id FROM borrowed
+--             WHERE user_id= NEW.user_id AND equipment_id= NEW.equipment_id
+--                 ) THEN SIGNAL SQLSTATE '45000'
+--             SET MESSAGE_TEXT= 'User already has a penalty for this equipment';
+--             END IF;
+--     END $$
 
-DELIMITER ;
+-- DELIMITER ;
 
 
 ## TRIGGER that updates the equipment status once it is borrowed by a user
@@ -73,22 +73,22 @@ CREATE TRIGGER update_equipment_on_return
 DELIMITER ;
 
 
-## TRIGGER to preventing a borrowed equipment to be borrowed again
-DELIMITER $$
+-- ## TRIGGER to preventing a borrowed equipment to be borrowed again
+-- DELIMITER $$
 
-CREATE TRIGGER prevent_borrowed_equipment_borrow
-    BEFORE INSERT ON borrowed
-    FOR EACH ROW
-    BEGIN
-        IF EXISTS(
-            SELECT equipment_id FROM equipment
-            WHERE equipment_availability= 'borrowed'
-                ) THEN SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT= 'The equipment was already borrowed! Please borrow another equipment';
-            END IF;
-    END $$
+-- CREATE TRIGGER prevent_borrowed_equipment_borrow
+--     BEFORE INSERT ON borrowed
+--     FOR EACH ROW
+--     BEGIN
+--         IF EXISTS(
+--             SELECT equipment_id FROM equipment
+--             WHERE equipment_availability = 'borrowed'
+--                 ) THEN SIGNAL SQLSTATE '45000'
+--             SET MESSAGE_TEXT= 'The equipment was already borrowed! Please borrow another equipment';
+--             END IF;
+--     END $$
 
-DELIMITER ;
+-- DELIMITER ;
 
 
 
