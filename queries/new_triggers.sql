@@ -27,7 +27,7 @@ CREATE TRIGGER apply_penalty_overdue_equipment
 DELIMITER ;
 
 
-## TRIGGER to avoid imposing multiple penalty fees for a user who already has that penalty
+-- TRIGGER to avoid imposing multiple penalty fees for a user who already has that penalty
 DELIMITER $$
 
 CREATE TRIGGER prevent_duplicate_borrow
@@ -38,71 +38,65 @@ CREATE TRIGGER prevent_duplicate_borrow
             SELECT borrow_id FROM borrowed
             WHERE user_id= NEW.user_id AND equipment_id= NEW.equipment_id
                 ) THEN SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT= 'User already has a penalty for this equipment';
+            SET MESSAGE_TEXT= 'User has already borrowed this equipment!';
             END IF;
     END $$
 
 DELIMITER ;
 
 
-## TRIGGER that updates the equipment status once it is borrowed by a user
+-- TRIGGER to send notification when there is an hour left before the deadline of the return time
 DELIMITER $$
-CREATE TRIGGER update_equipment_on_borrow
+CREATE TRIGGER send_reminder_to_return
     AFTER INSERT ON borrowed
     FOR EACH ROW
     BEGIN
-        UPDATE equipment
-        SET equipment_availability= 'borrowed'
-        WHERE equipment_id= NEW.equipment_id;
+        IF NEW.returned_on IS NULL AND NEW.due_date> DATE_SUB(NOW(), INTERVAL 1 HOUR) THEN
+            INSERT INTO notification(user_id, message, timestamp)
+            SELECT
+                    NEW.user_id,
+                    CONCAT('Dear ', user.first_name, ' ', user.last_name, ', please return the following item: ', equipment.name, ' within an hour; otherwise you will be issued with a 25RMB penalty. Thank you'
+                    ),
+                    NOW()
+            FROM user
+            JOIN borrowed USING(user_id)
+            JOIN equipment USING (equipment_id)
+            WHERE user.user_id= NEW.user_id;
+        END IF;
     END $$
 
 DELIMITER ;
 
 
-## TRIGGER that updates the equipment status once it is returned by the user
+-- TRIGGER to send notification when the user has been issued a penalty
 DELIMITER $$
-CREATE TRIGGER update_equipment_on_return
-    AFTER UPDATE ON borrowed
+CREATE TRIGGER penalty_notification
+    AFTER INSERT ON penalty
     FOR EACH ROW
     BEGIN
-        UPDATE equipment
-        SET equipment_availability= 'available'
-        WHERE equipment_id= NEW.equipment_id AND returned_on IS NOT NULL;
+        INSERT INTO notification(user_id, message, timestamp)
+        SELECT
+                NEW.user_id,
+                CONCAT('Dear ', user.first_name, ' ', user.last_name, ' since you have not returned the item: ', equipment.name,
+                       ' before the due time which was at ', borrowed.due_date, ','
+                       'you will now be fined with 25 RMB penalty'),
+                NOW()
+        FROM user
+        JOIN borrowed USING(user_id)
+        JOIN equipment USING (equipment_id)
+        WHERE user.user_id= NEW.user_id;
     END $$
 
 DELIMITER ;
-
-
-## TRIGGER to preventing a borrowed equipment to be borrowed again
-DELIMITER $$
-
-CREATE TRIGGER prevent_borrowed_equipment_borrow
-    BEFORE INSERT ON borrowed
-    FOR EACH ROW
-    BEGIN
-        IF EXISTS(
-            SELECT equipment_id FROM equipment
-            WHERE equipment_availability= 'borrowed'
-                ) THEN SIGNAL SQLSTATE '45000'
-            SET MESSAGE_TEXT= 'The equipment was already borrowed! Please borrow another equipment';
-            END IF;
-    END $$
-
-DELIMITER ;
-
-
-
-
-CREATE PROCEDURE user_return_equipment()
-
-
 
 
 
 DELETE FROM borrowed;
 DELETE FROM penalty;
+DELETE FROM notification;
 
 
-INSERT INTO borrowed(user_id, equipment_id, borrow_date, due_date, returned_on)
-VALUES(4, 6, '2024-12-04', '2024-12-05', NULL);
+INSERT INTO borrowed(user_id, equipment_id, borrow_date, due_date, returned_on) VALUES
+(4, 6, '2024-12-06 17:30:00', '2024-12-07 01:36:00', NULL)
+(5, 3, '2024-12-06 17:30:00', '2024-12-06 23:00:00', NULL);
 
