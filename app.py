@@ -145,6 +145,11 @@ def reserve_facility():
         message = "Reservation successful."
         status = "success"
 
+        # Log activity to CSV file
+        with open('activity_log.csv', mode='a', encoding='utf-8') as file:
+            file.write(
+                f"Facility res,Card number: {card_number},Equipment ID: {facility_id}\n")
+
     except mysql.connector.Error as err:
         message = f"Database Error: {err.msg}"
         status = "error"

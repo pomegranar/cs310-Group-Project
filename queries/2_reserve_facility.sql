@@ -11,10 +11,10 @@ BEGIN
     DECLARE conflict_count INT;
     DECLARE reservation_duration INT;
 
-    -- Calculate reservation duration in minutes
+    -- Calculating the reservation duration in minutes
     SET reservation_duration = TIME_TO_SEC(p_end_time) / 60 - TIME_TO_SEC(p_start_time) / 60;
 
-    -- Check for time conflicts
+    -- Checking for time conflicts
     SELECT COUNT(*) INTO conflict_count
     FROM reservation
     WHERE facility_id = p_facility_id
@@ -31,6 +31,12 @@ BEGIN
     ELSEIF reservation_duration > 60 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Reservation duration exceeds one hour.';
+    ELSEIF p_reserve_date < CURRENT_DATE() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT  = 'Please select a date in the future.';
+    ELSEIF DATE(p_reserve_date) = CURDATE() AND TIME(p_start_time) < CURTIME() THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT  = 'Please select a date in the future.';
     ELSE
         INSERT INTO reservation (user_id, facility_id, reserve_date, start_time, end_time)
         VALUES (p_user_id, p_facility_id, p_reserve_date, p_start_time, p_end_time);
