@@ -61,20 +61,15 @@ def checkout_equipment():
     equipment_id = data['equipment_id']
 
     conn = get_db_connection()
-
     cursor = conn.cursor()
 
-    # Add to borrowed table with checkout details
-    cursor.execute("""
-        INSERT INTO borrowed (user_id, equipment_id)
-        VALUES ((SELECT user_id FROM user WHERE (card_number = %s OR netid = %s)), %s);
+    try:
+        cursor.execute("""
+            CALL checkout_equipment(
+                (SELECT user_id FROM user WHERE card_number = %s OR netid = %s),%s
+            );
         """, (card_number, card_number, equipment_id))
 
-    if cursor.rowcount == 0:
-        message = "Equipment already checked out, or invalid."
-        status = "error"
-
-    else:
         conn.commit()
         message = "Equipment checked out successfully."
         status = "success"
@@ -82,10 +77,14 @@ def checkout_equipment():
         # Log activity to CSV file
         with open('activity_log.csv', mode='a', encoding='utf-8') as file:
             file.write(
-                f"Checkout,Card number: {card_number},Equipment ID: {equipment_id}\n")
+                f"Checkout,{card_number},{equipment_id}\n")
+            
+    except mysql.connector.Error as err:
+        message = f"Database Error: {err.msg}"
+        status = "error"
+        print(f"Database Error: {err.msg}")
 
     cursor.close()
-
     conn.close()
 
     return jsonify({"message": message, "status": status})
@@ -148,12 +147,12 @@ def reserve_facility():
         # Log activity to CSV file
         with open('activity_log.csv', mode='a', encoding='utf-8') as file:
             file.write(
-                f"Facility res,Card number: {card_number},Equipment ID: {facility_id}\n")
+                f"Facility res,{card_number},{facility_id}\n")
 
     except mysql.connector.Error as err:
         message = f"Database Error: {err.msg}"
         status = "error"
-        print(f"Database Error: {err.msg}")  # Debugging purposes
+        print(f"Database Error: {err.msg}")
 
     cursor.close()
     conn.close()

@@ -1,19 +1,27 @@
-// Checkout handling script for the database.
+// Checkout handling script for the database:
 document.addEventListener("DOMContentLoaded", function () {
 	const equipmentSelect = document.getElementById("equipment");
 
-	// Fetch equipment data from the server and populate options dynamically.
-	fetch("/get_equipment")
-		.then((response) => response.json())
-		.then((data) => {
-			data.forEach((e) => {
-				const option = document.createElement("option");
-				option.value = e.equipment_id;
-				option.textContent = `${e.sport} - ${e.name} #${e.number}`;
-				equipmentSelect.appendChild(option);
-			});
-		})
-		.catch((error) => console.error("Error fetching equipment data:", error));
+	// Function to fetch and populate equipment data
+	function fetchAndUpdateEquipment() {
+		// Clear existing options
+		equipmentSelect.innerHTML = "";
+
+		fetch("/get_equipment")
+			.then((response) => response.json())
+			.then((data) => {
+				data.forEach((e) => {
+					const option = document.createElement("option");
+					option.value = e.equipment_id;
+					option.textContent = `${e.sport} - ${e.name} #${e.number}`;
+					equipmentSelect.appendChild(option);
+				});
+			})
+			.catch((error) => console.error("Error fetching equipment data:", error));
+	}
+
+	// Initial fetch.
+	fetchAndUpdateEquipment();
 
 	// Form submission for check-out
 	document.getElementById("checkOutForm").addEventListener("submit", function (event) {
@@ -33,6 +41,10 @@ document.addEventListener("DOMContentLoaded", function () {
 				result.classList.remove("d-none");
 				result.classList.add(data.success ? "alert-success" : "alert-danger");
 				result.textContent = data.message;
+
+				console.log(data);
+
+				fetchAndUpdateEquipment();
 			})
 			.catch((error) => {
 				const result = document.getElementById("result");
