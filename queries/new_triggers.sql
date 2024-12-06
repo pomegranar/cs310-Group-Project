@@ -97,6 +97,6 @@ DELETE FROM notification;
 
 
 INSERT INTO borrowed(user_id, equipment_id, borrow_date, due_date, returned_on) VALUES
-(4, 6, '2024-12-06 17:30:00', '2024-12-07 01:36:00', NULL)
+(4, 6, '2024-12-06 17:30:00', '2024-12-07 01:36:00', NULL),
 (5, 3, '2024-12-06 17:30:00', '2024-12-06 23:00:00', NULL);
 
