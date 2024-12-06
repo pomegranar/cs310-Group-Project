@@ -1,5 +1,6 @@
 DELIMITER //
 
+-- FACILITY RESERVATIONS PROCEDURE
 CREATE PROCEDURE reserve_facility(
     IN p_user_id INT,
     IN p_facility_id INT,
@@ -42,5 +43,29 @@ BEGIN
         VALUES (p_user_id, p_facility_id, p_reserve_date, p_start_time, p_end_time);
     END IF;
 END //
+
+
+-- CHECKOUT PROCEDURE
+CREATE PROCEDURE checkout_equipment(
+    IN p_user_id INT,
+    IN p_equipment_id INT
+)
+BEGIN
+    DECLARE existing_checkouts INT;
+
+    SELECT COUNT(*) INTO existing_checkouts
+    FROM borrowed
+    WHERE user_id = p_user_id AND equipment_id = p_equipment_id AND returned_on IS NULL;
+
+    IF existing_checkouts > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Equipment unavailable.';
+    ELSE
+        INSERT INTO borrowed (user_id, equipment_id)
+        VALUES (p_user_id, p_equipment_id);
+    END IF;
+END //
+
+
 
 DELIMITER ;
