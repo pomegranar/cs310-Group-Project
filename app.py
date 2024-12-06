@@ -53,7 +53,7 @@ def get_equipment():
 
 @app.route('/checkout_equipment', methods=['POST'])
 def checkout_equipment():
-    # TODO: Add check for penalties!!
+    # TODO: Turn this into a procedure to allow checks for penalties and maintain cardinality. This would also prevent having to constantly reload the server.
     """API endpoint for checking out equipment"""
     data = request.json
 
