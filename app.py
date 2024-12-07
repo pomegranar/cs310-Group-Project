@@ -28,27 +28,49 @@ def index():
     return render_template('index.html')
 
 
-@app.route('/get_equipment')
-def get_equipment():
-    """API endpoint to get equipment data (for populating dropdowns)"""
+@app.route('/get_sports')
+def get_sports():
+    """API endpoint to get all sports."""
     conn = get_db_connection()
     cursor = conn.cursor(dictionary=True)
 
-    cursor.execute("""
-        SELECT s.name AS sport, e.name, e.number, e.equipment_id
-        FROM equipment e
-        JOIN sport s ON e.sport_id = s.sport_id
-        LEFT OUTER JOIN borrowed b ON e.equipment_id = b.equipment_id
-        WHERE b.equipment_id IS NULL OR b.returned_on IS NOT NULL
-        ORDER BY s.name;
-        """)
-
-    equipment = cursor.fetchall()
+    cursor.execute("SELECT name FROM sport ORDER BY name;")
+    sports = cursor.fetchall()
 
     cursor.close()
     conn.close()
 
+    return jsonify(sports)
+
+
+@app.route('/get_equipment')
+def get_equipment():
+    # API endpoint to get equipment data for populating dropdowns.
+    sport_name = request.args.get("sport", default=None)  # Get the sport filter if provided
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    query = """
+        SELECT s.name AS sport, e.name, e.number, e.equipment_id
+        FROM equipment e
+        JOIN sport s ON e.sport_id = s.sport_id
+        LEFT OUTER JOIN borrowed b ON e.equipment_id = b.equipment_id
+        WHERE (b.equipment_id IS NULL OR b.returned_on IS NOT NULL)
+    """
+    params = []
+    if sport_name and sport_name != "All":
+        query += " AND s.name = %s"
+        params.append(sport_name)
+
+    query += " ORDER BY s.name;"
+    cursor.execute(query, params)
+
+    equipment = cursor.fetchall()
+    cursor.close()
+    conn.close()
+
     return jsonify(equipment)
+
 
 
 @app.route('/checkout_equipment', methods=['POST'])
@@ -80,9 +102,9 @@ def checkout_equipment():
                 f"Checkout,{card_number},{equipment_id}\n")
             
     except mysql.connector.Error as err:
-        message = f"Database Error: {err.msg}"
+        message = f"Error: {err.msg}"
         status = "error"
-        print(f"Database Error: {err.msg}")
+        print(f"Error: {err.msg}")
 
     cursor.close()
     conn.close()
@@ -147,12 +169,12 @@ def reserve_facility():
         # Log activity to CSV file
         with open('activity_log.csv', mode='a', encoding='utf-8') as file:
             file.write(
-                f"Facility res,{card_number},{facility_id}\n")
+                f"Reservation,{card_number},{facility_id}\n")
 
     except mysql.connector.Error as err:
-        message = f"Database Error: {err.msg}"
+        message = f"Error: {err.msg}"
         status = "error"
-        print(f"Database Error: {err.msg}")
+        print(f"Error: {err.msg}")
 
     cursor.close()
     conn.close()
