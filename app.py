@@ -87,9 +87,7 @@ def checkout_equipment():
 
     try:
         cursor.execute("""
-            CALL checkout_equipment(
-                (SELECT user_id FROM user WHERE card_number = %s OR netid = %s),%s
-            );
+            CALL checkout_equipment((SELECT user_id FROM user WHERE card_number = %s OR netid = %s),%s);
         """, (card_number, card_number, equipment_id))
 
         conn.commit()

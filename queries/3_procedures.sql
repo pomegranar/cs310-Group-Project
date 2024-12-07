@@ -34,7 +34,10 @@ BEGIN
         (p_start_time <= start_time AND p_end_time >= end_time)
       );
 
-    IF conflict_count > 0 THEN
+    IF p_user_id NOT IN (SELECT user_id FROM active_members) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'User has no active membership.';
+    ELSEIF conflict_count > 0 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Reservation time conflict detected.';
     ELSEIF reservation_duration > 60 THEN
@@ -68,11 +71,14 @@ BEGIN
 
     SELECT COUNT(*) INTO existing_checkouts
     FROM borrowed
-    WHERE user_id = p_user_id AND equipment_id = p_equipment_id AND returned_on IS NULL;
+    WHERE equipment_id = p_equipment_id AND returned_on IS NULL;
 
     IF existing_checkouts > 0 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Equipment unavailable.';
+    ELSEIF p_user_id NOT IN (SELECT user_id FROM active_members) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'User has no active membership.';
     ELSE
         INSERT INTO borrowed (user_id, equipment_id)
         VALUES (p_user_id, p_equipment_id);

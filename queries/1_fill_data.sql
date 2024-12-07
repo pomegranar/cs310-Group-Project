@@ -4,9 +4,15 @@ INSERT INTO user (netid, card_number, first_name, last_name, gender, birthday, r
 ('an301', '112233', 'Anar', 'Nyambayar', 'male', '2005-01-01', 'student'),
 ('srb94', '696969', 'Sean', 'Bugarin', 'male', '2004-08-11', 'student'),
 ('de82', '420420', 'Doniyor', 'Erkinov', 'male', '2003-11-01', 'student'),
-('mm940', '1104380', 'Mustafa', 'Misir', 'male', '1900-4-05', 'faculty'),
+('mm940', '1104380', 'Mustafa', 'Misir', 'male', '1900-4-05', 'faculty'), -- Couldn't find his birthday
 ('aa846', '32134243', 'Avidikhuu', 'Altangerel', 'male', '2005-11-01', 'student');
 
+INSERT INTO membership (user_id, start_date, end_date, state) VALUES
+(1, '2024-08-13', '2025-08-13', 'active'),
+(2, '2024-08-13', '2025-08-13', 'active'),
+(3, '2024-08-13', '2025-08-13', 'active'),
+(4, '2024-08-13', '2025-08-13', 'active'),
+(5, '2023-08-13', '2024-08-13', 'expired');
 
 
 INSERT INTO sport (name) VALUES
@@ -14,14 +20,15 @@ INSERT INTO sport (name) VALUES
 ('Volleyball'),
 ('Badminton'),
 ('Billiards'),
-('Table tennis'),
+('Table Tennis'),
 ('Tennis'),
 ('Squash'),
 ('Football'),
 ('American Football'),
 ('Ultimate Frisbee'),
 ('Dance'),
-('Climbing');
+('Climbing'),
+('Cycling');
 
 INSERT INTO equipment (sport_id, name, number) VALUES
 (1, 'ball', 1),
@@ -55,19 +62,8 @@ INSERT INTO facility (name, reservable, floor) VALUES
 
 
 INSERT INTO class(sport_id, instructor_id, location) VALUES
-(1,  7, 1);
+(1,  3, 1);
 
-
-
-CREATE TABLE
-    schedule (
-        schedule_id INT PRIMARY KEY AUTO_INCREMENT,
-        class_id INT NOT NULL,
-        day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'),
-        start_time DATETIME NOT NULL,
-        end_time DATETIME NOT NULL,
-        FOREIGN KEY (class_id) REFERENCES class(class_id)
-);
 
 
 INSERT INTO schedule(class_id, day_of_week, start_time, end_time) VALUES
