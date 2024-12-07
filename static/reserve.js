@@ -17,7 +17,11 @@ document.getElementById("reservationForm").addEventListener("submit", async (e) 
 	const result = await response.json();
 	const resultAlert = document.getElementById("result");
 	resultAlert.classList.remove("d-none");
+	console.log(result.status);
+	// Update the alert class based on the result status
+	resultAlert.classList.remove("alert-success", "alert-danger", "d-none");
 	resultAlert.classList.add(result.status === "success" ? "alert-success" : "alert-danger");
+	resultAlert.classList.remove("d-none");
 	resultAlert.textContent = result.message;
 });
 

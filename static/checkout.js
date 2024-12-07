@@ -38,8 +38,8 @@ document.addEventListener("DOMContentLoaded", function () {
 			.then((response) => response.json())
 			.then((data) => {
 				const result = document.getElementById("result");
-				result.classList.remove("d-none");
-				result.classList.add(data.success ? "alert-success" : "alert-danger");
+				result.classList.remove("alert-success", "alert-danger", "d-none");
+				result.classList.add(data.status === "success" ? "alert-success" : "alert-danger");
 				result.textContent = data.message;
 
 				console.log(data);

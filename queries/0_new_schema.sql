@@ -60,7 +60,7 @@ CREATE TABLE
         equipment_id INT PRIMARY KEY AUTO_INCREMENT,
         name 		VARCHAR(100) NOT NULL,
         number 		INT CHECK (number >= 0), -- i.e. Ball #2, Ball #6, Bike #3
-        equipment_availability ENUM('available', 'borrowed', 'not returned on time') DEFAULT 'available',
+        -- equipment_availability ENUM('available', 'borrowed', 'not returned on time') DEFAULT 'available',
         admin_note 	TEXT,
         sport_id 	INT,
         FOREIGN KEY (sport_id) REFERENCES sport (sport_id)
