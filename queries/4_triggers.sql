@@ -1,5 +1,6 @@
 USE sports;
 
+-- DROP TRIGGER set_due_date
 -- DROP TRIGGER apply_penalty_overdue_equipment;
 -- DROP TRIGGER prevent_duplicate_borrow;
 -- DROP TRIGGER update_equipment_on_borrow;
@@ -97,13 +98,4 @@ CREATE TRIGGER penalty_notification
 DELIMITER ;
 
 
-
-DELETE FROM borrowed;
-DELETE FROM penalty;
-DELETE FROM notification;
-
-
-INSERT INTO borrowed(user_id, equipment_id, borrow_when, due_when, returned_on) VALUES
-(4, 6, '2024-12-06 17:30:00', '2024-12-07 01:36:00', NULL),
-(5, 3, '2024-12-06 17:30:00', '2024-12-06 23:00:00', NULL);
 
