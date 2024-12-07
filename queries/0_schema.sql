@@ -27,6 +27,7 @@ CREATE TABLE
         )
     );
 
+
 CREATE TABLE
     contact (
         contact_id 	INT PRIMARY KEY AUTO_INCREMENT,
@@ -35,6 +36,7 @@ CREATE TABLE
         info 		VARCHAR(100),
         FOREIGN KEY (user_id) REFERENCES user(user_id)
     );
+
 
 CREATE TABLE
     membership (
@@ -105,11 +107,21 @@ CREATE TABLE
         sport_id 		INT,
         instructor_id 	INT NOT NULL,
         location 		INT,
-        schedule 		TEXT, -- Maybe we can expand this into a multivariable attribute with timestamp values for each day of the week?
         FOREIGN KEY (sport_id) REFERENCES sport (sport_id),
         FOREIGN KEY (instructor_id) REFERENCES user(user_id),
         FOREIGN KEY (location) REFERENCES facility (facility_id)
     );
+
+
+CREATE TABLE
+    schedule (
+        schedule_id INT PRIMARY KEY AUTO_INCREMENT,
+        class_id INT NOT NULL,
+        day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'),
+        start_time DATETIME NOT NULL,
+        end_time DATETIME NOT NULL,
+        FOREIGN KEY (class_id) REFERENCES class(class_id)
+);
 
 
 CREATE TABLE
@@ -148,6 +160,7 @@ CREATE TABLE
         FOREIGN KEY (user_id) REFERENCES user(user_id)
     );
 
+
 CREATE TABLE
     announcement (
         announcement_id INT PRIMARY KEY AUTO_INCREMENT,
@@ -156,6 +169,7 @@ CREATE TABLE
         timestamp 		DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY (sport_id) REFERENCES sport (sport_id)
     );
+
 
 CREATE TABLE
     enrollment (

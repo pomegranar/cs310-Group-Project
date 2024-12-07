@@ -7,7 +7,7 @@ USE sports;
 -- DROP TRIGGER prevent_borrowed_equipment_borrow;
 
 
--- This trigger sets the due date and time to specifically 9pm the current day.
+-- TRIGGER to set the due date and time to specifically 9pm the current day.
 CREATE TRIGGER set_due_date
 BEFORE INSERT ON borrowed
 FOR EACH ROW
@@ -35,7 +35,7 @@ CREATE TRIGGER apply_penalty_overdue_equipment
 DELIMITER ;
 
 
--- TRIGGER to avoid imposing multiple penalty fees for a user who already has that penalty
+-- TRIGGER to avoid making a user to borrow the same item multiple time before the user returns the item
 DELIMITER $$
 
 CREATE TRIGGER prevent_duplicate_borrow

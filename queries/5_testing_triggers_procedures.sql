@@ -13,12 +13,34 @@ CALL register_user(
      'izzatillo.nematjonov@dukekunshan.edu.cn'
      );
 
+CALL register_user(
+     'lj23',
+     '1238905',
+     'Lebron',
+     'James',
+     'male',
+     '1984-12-30',
+     'staff',
+     'email',
+     'lebron.james@dukekunshan.edu.cm'
+     );
 
+
+CALL enroll_users_to_classes(
+     2,
+     1
+     );
 
 
 SELECT * FROM user;
-
+SELECT * FROM class;
+SELECT * FROM enrollment;
+SELECT * FROM schedule;
 SELECT * FROM contact;
 
-DELETE FROM user;
+
+SELECT start_time, end_time
+FROM schedule
+WHERE class_id= 1;
+
 

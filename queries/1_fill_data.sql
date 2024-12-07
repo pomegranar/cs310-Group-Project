@@ -7,6 +7,8 @@ INSERT INTO user (netid, card_number, first_name, last_name, gender, birthday, r
 ('mm940', '1104380', 'Mustafa', 'Misir', 'male', '1900-4-05', 'faculty'),
 ('aa846', '32134243', 'Avidikhuu', 'Altangerel', 'male', '2005-11-01', 'student');
 
+
+
 INSERT INTO sport (name) VALUES
 ('Basketball'),
 ('Volleyball'),
@@ -50,3 +52,26 @@ INSERT INTO facility (name, reservable, floor) VALUES
 ('Tennis Court', TRUE, 1),
 ('Squash Room', TRUE, 4),
 ('Badminton Court', TRUE, 1);
+
+
+INSERT INTO class(sport_id, instructor_id, location) VALUES
+(1,  7, 1);
+
+
+
+CREATE TABLE
+    schedule (
+        schedule_id INT PRIMARY KEY AUTO_INCREMENT,
+        class_id INT NOT NULL,
+        day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'),
+        start_time DATETIME NOT NULL,
+        end_time DATETIME NOT NULL,
+        FOREIGN KEY (class_id) REFERENCES class(class_id)
+);
+
+
+INSERT INTO schedule(class_id, day_of_week, start_time, end_time) VALUES
+(1, 'Monday', '2024-12-02 08:00:00', '2024-12-02 08:00:00'),
+(1, 'Wednesday', '2024-12-02 08:00:00', '2024-12-02 08:00:00');
+
+

@@ -3,6 +3,7 @@ USE sports;
 -- DROP PROCEDURE reserve_facility;
 -- DROP PROCEDURE checkout_equipment;
 -- DROP PROCEDURE register_user;
+-- DROP PROCEDURE enroll_users_to_classes;
 
 
 -- PROCEDURE FOR FACILITY RESERVATION
@@ -144,6 +145,56 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+
+-- PROCEDURE TO ENROLL USERS TO CLASSES
+DELIMITER $$
+
+CREATE PROCEDURE enroll_users_to_classes(
+    IN p_user_id INT,
+    IN p_class_id INT
+)
+BEGIN
+    DECLARE conflict_count INT;
+    DECLARE class_start_time DATETIME;
+    DECLARE class_end_time DATETIME;
+
+    -- deriving start and end times of classes from the schedule
+    SELECT start_time, end_time INTO class_start_time, class_end_time
+    FROM schedule
+    WHERE class_id= p_class_id
+    LIMIT 1;
+
+    -- Checking for time conflicts
+    SELECT COUNT(*) INTO conflict_count
+    FROM enrollment
+    JOIN schedule USING (class_id)
+    WHERE enrollment.user_id= p_user_id AND
+        (
+            (class_start_time >= schedule.start_time AND class_start_time < schedule.end_time) OR
+            (class_end_time > schedule.start_time AND class_end_time <= schedule.end_time) OR
+            (class_start_time <= schedule.start_time AND class_end_time >= schedule.end_time)
+        );
+
+    IF EXISTS(SELECT * FROM enrollment WHERE user_id= p_user_id AND class_id= p_class_id) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The user has already enrolled in this class';
+
+    ELSEIF conflict_count > 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Class schedule time conflict detected.';
+
+    ELSE
+        INSERT INTO enrollment(user_id, class_id)
+        VALUES (p_user_id, p_class_id);
+
+    END IF;
+END $$
+
+DELIMITER ;
+
+
 
 
 
