@@ -13,7 +13,7 @@ CREATE TRIGGER apply_penalty_overdue_equipment
     AFTER INSERT ON borrowed
     FOR EACH ROW
     BEGIN
-    IF NEW.returned_on IS NULL AND NEW.due_date < NOW() THEN
+    IF NEW.returned_on IS NULL AND NEW.due_when < NOW() THEN
             INSERT INTO penalty (user_id, fee, equipment_id, issued_date)
             VALUES (
                 NEW.user_id,
@@ -51,7 +51,7 @@ CREATE TRIGGER send_reminder_to_return
     AFTER INSERT ON borrowed
     FOR EACH ROW
     BEGIN
-        IF NEW.returned_on IS NULL AND NEW.due_date> DATE_SUB(NOW(), INTERVAL 1 HOUR) THEN
+        IF NEW.returned_on IS NULL AND NEW.due_when> DATE_SUB(NOW(), INTERVAL 1 HOUR) THEN
             INSERT INTO notification(user_id, message, timestamp)
             SELECT
                     NEW.user_id,
@@ -78,7 +78,7 @@ CREATE TRIGGER penalty_notification
         SELECT
                 NEW.user_id,
                 CONCAT('Dear ', user.first_name, ' ', user.last_name, ' since you have not returned the item: ', equipment.name,
-                       ' before the due time which was at ', borrowed.due_date, ','
+                       ' before the due time which was at ', borrowed.due_when, ','
                        'you will now be fined with 25 RMB penalty'),
                 NOW()
         FROM user
@@ -96,7 +96,7 @@ DELETE FROM penalty;
 DELETE FROM notification;
 
 
-INSERT INTO borrowed(user_id, equipment_id, borrow_date, due_date, returned_on) VALUES
+INSERT INTO borrowed(user_id, equipment_id, borrow_when, due_when, returned_on) VALUES
 (4, 6, '2024-12-06 17:30:00', '2024-12-07 01:36:00', NULL),
 (5, 3, '2024-12-06 17:30:00', '2024-12-06 23:00:00', NULL);
 

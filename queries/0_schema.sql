@@ -31,8 +31,8 @@ CREATE TABLE
     contact (
         contact_id 	INT PRIMARY KEY AUTO_INCREMENT,
         user_id 	INT NOT NULL,
+        info_type 	ENUM('phone', 'email', 'address', 'emergency') NOT NULL,
         info 		VARCHAR(100),
-        info_type 	ENUM('phone', 'email', 'address', 'emergency'),
         FOREIGN KEY (user_id) REFERENCES user(user_id)
     );
 
@@ -131,8 +131,8 @@ CREATE TABLE
         borrow_id 	INT PRIMARY KEY AUTO_INCREMENT,
         user_id 	INT NOT NULL,
         equipment_id INT NOT NULL,
-        borrow_date DATETIME DEFAULT CURRENT_TIMESTAMP,
-        due_date 	DATETIME DEFAULT CURRENT_TIMESTAMP,
+        borrow_when DATETIME DEFAULT CURRENT_TIMESTAMP,
+        due_when 	DATETIME DEFAULT ADDTIME(DATE_ADD(CURDATE(), INTERVAL 1 DAY), '21:00:00'),
         returned_on DATETIME DEFAULT NULL,
         FOREIGN KEY (user_id) REFERENCES user(user_id),
         FOREIGN KEY (equipment_id) REFERENCES equipment (equipment_id)

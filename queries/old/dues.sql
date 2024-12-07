@@ -3,7 +3,7 @@ WITH fee_list (netid, due) AS (
 	SELECT u.netid, sum_fine
 	FROM checkout_record r JOIN users u
 	ON r.user_id = u.user_id
-	WHERE  > r.due_date
+	WHERE  > r.due_when
 	GROUP BY u.netid
 	HAVING SUM(r.fine) sum_fine
 )

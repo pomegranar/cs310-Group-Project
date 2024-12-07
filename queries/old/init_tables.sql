@@ -45,7 +45,7 @@ CREATE TABLE  checkout_record(
     user_id INT NOT NULL,
     equipment_id INT,
     check_out_date DATETIME,
-    due_date DATETIME DEFAULT (DATE_ADD(CURRENT_DATE(), INTERVAL 1 DAY)),
+    due_when DATETIME DEFAULT (DATE_ADD(CURRENT_DATE(), INTERVAL 1 DAY)),
     actual_return_date DATETIME,
     fine numeric(4,2),
     FOREIGN KEY (equipment_ID) REFERENCES equipment (equipment_id),
