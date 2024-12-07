@@ -23,11 +23,17 @@ on macOS/Linux:
 ```bash
 source venv/bin/activate
 ```
-on Windows:
+on Windows Powershell:
 
-```bash
-.\venv\Scripts\activate
+```powershell
+./.venv/Scripts/Activate.ps1
 ```
+on Windows CMD:
+
+```powershell
+./.venv/Scripts/Activate.bat
+```
+
 After you *activate* the virtual environment, you can run the following command to tell Pip to download the necessary libraries:
 
 ```bash
