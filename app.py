@@ -3,14 +3,42 @@ Run this to start the server.
 Try not to edit this.
 """
 
+import os
 import getpass
 import mysql.connector
 from flask import Flask, render_template, request, jsonify
 
+# Prompt for MySQL password securely
 password = getpass.getpass(prompt='Password: ', stream=None)
 
 app = Flask(__name__)
 
+def execute_script(cursor, script):
+    """Execute a multi-statement SQL script with support for custom delimiters."""
+    delimiter = ";"  # Default delimiter
+    statements = []
+
+    for line in script.splitlines():
+        line = line.strip()
+
+        if line.startswith("DELIMITER"):
+            parts = line.split()
+            if len(parts) == 2:
+                delimiter = parts[1]
+            continue
+
+        statements.append(line)
+
+        if line.endswith(delimiter):
+            statement = "\n".join(statements).rstrip(delimiter).strip()
+            if statement:  # Skip empty statements
+                cursor.execute(statement, multi=False)
+            statements = []  # Reset for the next statement
+
+    if statements:
+        statement = "\n".join(statements).rstrip(delimiter).strip()
+        if statement:
+            cursor.execute(statement, multi=False)
 
 def get_db_connection():
     """CONNECTING TO THE DATABASE."""
@@ -20,6 +48,43 @@ def get_db_connection():
         password=password,
         database="sports"
     )
+
+try:
+    conn = get_db_connection()
+    conn.autocommit = True
+
+    cursor = conn.cursor()
+
+    queries_folder = "queries"
+    sql_files = sorted(f for f in os.listdir(
+        queries_folder) if f.endswith(".sql"))
+
+    for sql_file in sql_files:
+        file_path = os.path.join(queries_folder, sql_file)
+
+        print(f"Executing {sql_file}...")
+
+        with open(file_path, "r", encoding="utf-8") as file:
+            sql_script = file.read()
+
+        execute_script(cursor, sql_script)
+
+        print(f"{sql_file} executed successfully.")
+
+except mysql.connector.Error as err:
+    print(f"Database connection error: {err}")
+except Exception as e:
+    print(f"Unexpected error: {e}")
+finally:
+    if 'cursor' in locals() and cursor:
+        cursor.close()
+    if 'conn' in locals() and conn:
+        conn.close()
+
+print("\033[1;32mDatabase setup complete.\033[0m")
+
+
+
 
 
 @app.route('/')

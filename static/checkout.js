@@ -76,9 +76,17 @@ document.addEventListener("DOMContentLoaded", function () {
 	fetchAndRenderSports();
 	fetchAndUpdateEquipment();
 
+	function moveCursorToEnd() {
+		const input = document.getElementById("card_id");
+		const length = input.value.length;
+		input.focus();
+		input.setSelectionRange(0, length);
+	}
+
 	// Form submission for check-out
 	document.getElementById("checkOutForm").addEventListener("submit", function (event) {
 		event.preventDefault();
+		moveCursorToEnd();
 
 		const card_number = document.getElementById("card_id").value;
 		const equipment_id = document.getElementById("equipment").value;

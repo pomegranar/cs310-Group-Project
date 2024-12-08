@@ -1,6 +1,14 @@
+function moveCursorToEnd() {
+	const input = document.getElementById("cardNumber");
+	const length = input.value.length;
+	input.focus();
+	input.setSelectionRange(0, length);
+}
+
 // Reservation handling script for the database.
 document.getElementById("reservationForm").addEventListener("submit", async (e) => {
 	e.preventDefault();
+	moveCursorToEnd();
 
 	const response = await fetch("/reserve_facility", {
 		method: "POST",
