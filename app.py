@@ -13,7 +13,7 @@ Run this to start the server.
 import os
 import getpass
 import mysql.connector
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, json, render_template, request, jsonify
 
 # Prompt for MySQL password securely
 password = getpass.getpass(prompt='Password: ', stream=None)
@@ -126,8 +126,8 @@ def get_equipment():
         SELECT s.name AS sport, e.name, e.number, e.equipment_id
         FROM equipment e
         JOIN sport s ON e.sport_id = s.sport_id
-        LEFT OUTER JOIN borrowed b ON e.equipment_id = b.equipment_id
-        WHERE (b.equipment_id IS NULL OR b.returned_on IS NOT NULL)
+        LEFT OUTER JOIN active_borrower_items b ON e.equipment_id = b.equipment_id
+        WHERE (b.borrow_when IS NULL)
     """
     params = []
     if sport_name and sport_name != "All":
@@ -147,7 +147,6 @@ def get_equipment():
 
 @app.route('/checkout_equipment', methods=['POST'])
 def checkout_equipment():
-    # TODO: Turn this into a procedure to allow checks for penalties and maintain cardinality. This would also prevent having to constantly reload the server.
     """API endpoint for checking out equipment"""
     data = request.json
 
@@ -175,6 +174,53 @@ def checkout_equipment():
         message = f"Error: {err.msg}"
         status = "error"
         print(f"Error: {err.msg}")
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({"message": message, "status": status})
+
+
+@app.route('/get_borrowed_equipment')
+def get_borrowed_equipment():
+    """API endpoint to fetch currently borrowed equipment"""
+    card_number = request.args.get('card_number')
+    conn = get_db_connection()
+    cursor = conn.cursor(dictionary=True)
+
+    try:
+        # Get borrowed equipment
+        cursor.execute("select * from active_borrower_items where (card_number = %s OR netid = %s)", (card_number,card_number,))
+        borrowed_equipment = cursor.fetchall()
+    finally:
+        cursor.close()
+        conn.close()
+
+    return jsonify(borrowed_equipment)
+
+
+@app.route('/check_in_equipment', methods=['POST'])
+def check_in_equipment():
+    """API endpoint to check in selected equipment"""
+    data = request.json
+    card_number = data['card_number']
+    equipment_ids = data['equipment_ids']  # This is a list of equipment IDs
+
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    try:
+        cursor.execute("CALL check_in_equipment((SELECT user_id FROM user WHERE (card_number = %s OR netid = %s)), %s)", 
+                       (card_number,card_number, json.dumps(equipment_ids)))
+
+        conn.commit()
+        message = "Equipments successfully checked in."
+        status = "success"
+
+    except Exception as err:
+        message = f"Error: {err}"
+        status = "error"
+        print(err)
 
     cursor.close()
     conn.close()

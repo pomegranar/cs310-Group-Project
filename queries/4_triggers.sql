@@ -8,10 +8,20 @@ USE sports;
 
 
 -- TRIGGER to set the due date and time to specifically 9pm the current day.
+DELIMITER $$
+
 CREATE TRIGGER set_due_date
-BEFORE INSERT ON borrowed
-FOR EACH ROW
-SET NEW.due_when = ADDTIME(DATE(NEW.borrow_when), '21:00:00');
+    BEFORE INSERT ON borrowed
+    FOR EACH ROW
+    BEGIN
+    IF CURTIME() > '21:00:00' THEN
+        SET NEW.due_when = ADDTIME(DATE_ADD(DATE(NEW.borrow_when), INTERVAL 1 DAY), '21:00:00');
+    ELSE
+        SET NEW.due_when = ADDTIME(DATE(NEW.borrow_when), '21:00:00');
+    END IF;
+    END$$
+
+DELIMITER ;
 
 
 -- TRIGGER to apply penalty for users who hasn't returned the borrowed equipment

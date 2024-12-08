@@ -36,12 +36,12 @@ BEGIN
         (p_start_time <= start_time AND p_end_time >= end_time)
       );
 
-    IF CURTIME() > '21:00:00' OR CURTIME() < '07:00:00' THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'The Sports Complex is closed for the day, come back tomorrow after 7am!';
-    ELSEIF p_user_id IN (SELECT user_id FROM penalty) THEN
+    IF p_user_id IN (SELECT user_id FROM penalty) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'User has a penalty and can not make reservations until fees are paid.';
+    -- ELSEIF CURTIME() > '21:00:00' OR CURTIME() < '07:00:00' THEN
+    --     SIGNAL SQLSTATE '45000'
+    --     SET MESSAGE_TEXT = 'The Sports Complex is closed for the day, come back tomorrow after 7am!';
     ELSEIF p_user_id NOT IN (SELECT user_id FROM active_members) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'User has no active membership.';
@@ -81,12 +81,12 @@ BEGIN
     FROM borrowed
     WHERE equipment_id = p_equipment_id AND returned_on IS NULL;
 
-    IF CURTIME() > '21:00:00' OR CURTIME() < '07:00:00' THEN
-        SIGNAL SQLSTATE '45000'
-        SET MESSAGE_TEXT = 'The Sports Complex is closed for the day, come back tomorrow after 7am!';
-    ELSEIF existing_checkouts > 0 THEN
+    IF existing_checkouts > 0 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Equipment unavailable.';
+    -- ELSEIF CURTIME() > '21:00:00' OR CURTIME() < '07:00:00' THEN
+    --     SIGNAL SQLSTATE '45000'
+    --     SET MESSAGE_TEXT = 'The Sports Complex is closed for the day, come back tomorrow after 7am!';
     ELSEIF p_user_id IN (SELECT user_id FROM penalty) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'User has a penalty and can not check out equipment until fees are paid.';
@@ -101,6 +101,37 @@ END //
 
 DELIMITER ;
 
+
+-- EQUIPMENT CHECK IN PROCEDURE
+DELIMITER //
+
+CREATE PROCEDURE check_in_equipment(
+    IN user_id INT,
+    IN equipment_ids TEXT
+)
+BEGIN
+    DECLARE id INT;
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE cur CURSOR FOR SELECT id FROM JSON_TABLE(equipment_ids, '$[*]' COLUMNS (id INT PATH '$')) t;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN cur;
+
+    check_in_loop: LOOP
+        FETCH cur INTO id;
+        IF done THEN
+            LEAVE check_in_loop;
+        END IF;
+
+        UPDATE borrowed
+        SET returned_on = NOW()
+        WHERE user_id = user_id AND equipment_id = id AND returned_on IS NULL;
+    END LOOP;
+
+    CLOSE cur;
+END //
+
+DELIMITER ;
 
 
 -- PROCEDURE TO REGISTER NEW USERS

@@ -66,30 +66,20 @@
 		<!-- Main Content -->
 		<div class="container mt-5">
 			<h1 class="text-center mb-4">Equipment Check-In</h1>
-			<div class="row justify-content-center">
-				<div class="col-md-6">
-					<!-- Equipment Check-In Form -->
-					<form id="checkInForm" class="p-4 border rounded shadow">
-						<div class="mb-3">
-							<label for="card_id" class="form-label">Tap Card:</label>
-							<input type="text" id="card_id" name="card_id" class="form-control" placeholder="Enter your card ID" required />
-						</div>
-
-						<label for="sport" class="form-label">Select Sport:</label>
-						<div id="sport-container" class="mb-3 d-flex flex-wrap justify-content-between gap-2">
-							<!-- Radio buttons will be populated dynamically -->
-						</div>
-
-						<div class="mb-3">
-							<label for="equipment" class="form-label">Select Equipment:</label>
-							<select id="equipment" name="equipment" class="form-select" required>
-								<!-- Options will be populated dynamically -->
-							</select>
-						</div>
-						<button type="submit" class="btn btn-primary w-100">Check In</button>
-					</form>
+			<form id="checkInForm" class="p-4 border rounded shadow">
+				<div class="mb-3">
+					<label for="card_id" class="form-label">Tap Card:</label>
+					<input type="text" id="card_id" name="card_id" class="form-control" placeholder="Enter your card ID" required />
 				</div>
-			</div>
+				<div class="mb-3">
+					<label class="form-label">Select Equipment to Check-In:</label>
+					<div id="equipment-container" class="form-check">
+						<!-- Checkboxes will be dynamically populated -->
+					</div>
+				</div>
+				<button type="submit" class="btn btn-primary w-100">Confirm Check-In</button>
+			</form>
+			<div id="result" class="alert alert-info d-none mt-3" role="alert"></div>
 		</div>
 
 		<!-- Result Alert -->

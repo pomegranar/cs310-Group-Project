@@ -1,106 +1,74 @@
 document.addEventListener("DOMContentLoaded", function () {
-	const sportContainer = document.querySelector("#sport-container");
-	const equipmentSelect = document.getElementById("equipment");
+	const equipmentContainer = document.getElementById("equipment-container");
+	const checkInForm = document.getElementById("checkInForm");
+	const result = document.getElementById("result");
 
-	// Fetch sports dynamically
-	function fetchAndRenderSports() {
-		fetch("/get_sports")
-			.then((response) => response.json())
-			.then((sports) => {
-				// Add "All" option
-				let allRadio = document.createElement("input");
-				allRadio.type = "radio";
-				allRadio.className = "btn-check";
-				allRadio.name = "options";
-				allRadio.id = "option-all";
-				allRadio.checked = true;
-				let allLabel = document.createElement("label");
-				allLabel.className = "btn btn-outline-primary";
-				allLabel.htmlFor = "option-all";
-				allLabel.textContent = "All";
-				sportContainer.appendChild(allRadio);
-				sportContainer.appendChild(allLabel);
+	function fetchBorrowedEquipment(card_number) {
+		// Clear current checkboxes
+		equipmentContainer.innerHTML = "";
 
-				// Create buttons for each sport
-				sports.forEach((sport, index) => {
-					let sportRadio = document.createElement("input");
-					sportRadio.type = "radio";
-					sportRadio.className = "btn-check";
-					sportRadio.name = "options";
-					sportRadio.id = `option-${index}`;
-					let sportLabel = document.createElement("label");
-					sportLabel.className = "btn btn-outline-primary";
-					sportLabel.htmlFor = `option-${index}`;
-					sportLabel.textContent = sport.name;
-					sportContainer.appendChild(sportRadio);
-					sportContainer.appendChild(sportLabel);
-				});
-
-				addSportRadioListeners();
-			})
-			.catch((error) => console.error("Error fetching sports:", error));
-	}
-
-	// Fetch equipment for the selected sport
-	function fetchAndUpdateEquipment(sport = "All") {
-		equipmentSelect.innerHTML = "";
-
-		fetch(`/get_borrowed_equipment?sport=${encodeURIComponent(sport)}`)
+		fetch(`/get_borrowed_equipment?card_number=${card_number}`)
 			.then((response) => response.json())
 			.then((data) => {
 				data.forEach((item) => {
-					const option = document.createElement("option");
-					option.value = item.equipment_id;
-					option.textContent = `${item.sport} - ${item.name} #${item.number}`;
-					equipmentSelect.appendChild(option);
+					// Create a checkbox for each borrowed equipment
+					const checkbox = document.createElement("input");
+					checkbox.type = "checkbox";
+					checkbox.className = "form-check-input";
+					checkbox.id = `equipment-${item.equipment_id}`;
+					checkbox.value = item.equipment_id;
+					checkbox.checked = true; // Default to checked
+
+					const label = document.createElement("label");
+					label.className = "form-check-label";
+					label.htmlFor = checkbox.id;
+					label.textContent = `${item.name} #${item.number}`;
+
+					const div = document.createElement("div");
+					div.className = "form-check mb-2";
+					div.appendChild(checkbox);
+					div.appendChild(label);
+
+					equipmentContainer.appendChild(div);
 				});
 			})
-			.catch((error) => console.error("Error fetching equipment:", error));
+			.catch((error) => console.error("Error fetching borrowed equipment:", error));
 	}
 
-	// Add listeners to sport radio buttons
-	function addSportRadioListeners() {
-		document.querySelectorAll('input[name="options"]').forEach((radio) => {
-			radio.addEventListener("change", function () {
-				const sport = this.nextElementSibling.textContent.trim();
-				fetchAndUpdateEquipment(sport);
-			});
-		});
-	}
-
-	// Form submission
-	document.getElementById("checkInForm").addEventListener("submit", function (event) {
+	// Handle form submission for check-in
+	checkInForm.addEventListener("submit", function (event) {
 		event.preventDefault();
 
-		const card_id = document.getElementById("card_id").value;
-		const equipment_id = document.getElementById("equipment").value;
+		const card_number = document.getElementById("card_id").value;
 
-		fetch("/checkin_equipment", {
+		// Get all selected equipment IDs
+		const selectedEquipment = Array.from(equipmentContainer.querySelectorAll("input[type=checkbox]:checked")).map((checkbox) => parseInt(checkbox.value));
+
+		// Make API request to check in selected equipment
+		fetch("/check_in_equipment", {
 			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: JSON.stringify({ card_id: card_id, equipment_id: equipment_id }),
+			body: JSON.stringify({ card_number, equipment_ids: selectedEquipment }),
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				const result = document.getElementById("result");
 				result.classList.remove("alert-success", "alert-danger", "d-none");
 				result.classList.add(data.status === "success" ? "alert-success" : "alert-danger");
 				result.textContent = data.message;
 
-				// Refresh equipment
-				const selectedSport = document.querySelector('input[name="options"]:checked').nextElementSibling.textContent.trim();
-				fetchAndUpdateEquipment(selectedSport);
+				if (data.status === "success") {
+					fetchBorrowedEquipment(card_number); // Refresh equipment list
+				}
 			})
 			.catch((error) => {
-				const result = document.getElementById("result");
 				result.classList.remove("d-none");
 				result.classList.add("alert-danger");
 				result.textContent = "An error occurred. Please try again.";
-				console.error("Error:", error);
+				console.error("Error submitting form:", error);
 			});
 	});
 
-	// Initialize sports and equipment
-	fetchAndRenderSports();
-	fetchAndUpdateEquipment();
+	// Fetch borrowed equipment when the page loads
+	const cardInput = document.getElementById("card_id");
+	cardInput.addEventListener("input", () => fetchBorrowedEquipment(cardInput.value));
 });
