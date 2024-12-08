@@ -7,6 +7,19 @@ INSERT INTO user (netid, card_number, first_name, last_name, gender, birthday, r
 ('mm940', '1104380', 'Mustafa', 'Misir', 'male', '1900-4-05', 'faculty'), -- Couldn't find his birthday
 ('aa846', '32134243', 'Avidikhuu', 'Altangerel', 'male', '2005-11-01', 'student');
 
+-- all coaches have the same birthday for simplicity of filling data*
+INSERT INTO user (netid, card_number, first_name, last_name, gender, birthday, role) VALUES
+('jm195', '3498201', 'Jose', 'Mourinho', 'male', '1980-06-01', 'staff'),
+('pg438', '5781934', 'Pep', 'Guardiola', 'male', '1980-07-01', 'staff'),
+('kn702', '9027615', 'Khabib', 'Nurmagomedov','male', '1985-06-01', 'staff'),
+('dc586', '6182947', 'Daniel', 'Cormier', 'male', '1982-06-01', 'staff'),
+('rf314', '7458302', 'Roger', 'Federer', 'male', '1981-07-01', 'staff'),
+('sw829', '1037856', 'Serena', 'Williams', 'female', '1982-08-01', 'staff');
+
+INSERT INTO user (netid, card_number, first_name, last_name, gender, birthday, role) VALUES
+( 'lj23','1238905','Lebron','James','male','1984-12-30','staff');
+
+
 INSERT INTO membership (user_id, start_date, end_date, state) VALUES
 (1, '2024-08-13', '2025-08-13', 'active'),
 (2, '2024-08-13', '2025-08-13', 'active'),
@@ -29,6 +42,11 @@ INSERT INTO sport (name) VALUES
 ('Dance'),
 ('Climbing'),
 ('Cycling');
+
+INSERT INTO sport (name) VALUES
+('Brazilian jiu-jitsu'),
+('Combat Sambo'),
+('Boxing');
 
 INSERT INTO equipment (sport_id, name, number) VALUES
 (1, 'ball', 1),
@@ -54,6 +72,7 @@ INSERT INTO equipment (sport_id, name, number) VALUES
 (7, 'racquet', 3),
 (7, 'racquet', 4);
 
+
 INSERT INTO facility (name, reservable, floor) VALUES
 ('Basketball Court', TRUE, 1),
 ('Tennis Court', TRUE, 1),
@@ -61,13 +80,35 @@ INSERT INTO facility (name, reservable, floor) VALUES
 ('Badminton Court', TRUE, 1);
 
 
+INSERT INTO facility (name, reservable, floor) VALUES
+('Football stadium', TRUE, 1),
+('Martial Arts Room', TRUE, 4),
+('Table Tennis Court', TRUE, 3),
+('Dance Room', TRUE, 3),
+('Climbing Complex', TRUE, 1),
+('Volleyball ', TRUE, 1);
+
+
 INSERT INTO class(sport_id, instructor_id, location) VALUES
-(1,  3, 1);
+(6, 10, 2),
+(6, 11, 2),
+(8, 6, 5),
+(8, 7, 5),
+(15, 8, 6),
+(14, 9, 6);
 
 
 
 INSERT INTO schedule(class_id, day_of_week, start_time, end_time) VALUES
-(1, 'Monday', '2024-12-02 08:00:00', '2024-12-02 08:00:00'),
-(1, 'Wednesday', '2024-12-02 08:00:00', '2024-12-02 08:00:00');
-
-
+(1, 'Monday', '10:00:00', '11:00:00'),
+(1, 'Thursday', '10:00:00', '11:00:00'),
+(2, 'Tuesday', '10:00:00', '11:00:00'),
+(2, 'Friday', '10:00:00', '11:00:00'),
+(3, 'Monday', '11:00:00', '12:00:00'),
+(3, 'Thursday', '11:00:00', '12:00:00'),
+(4, 'Tuesday', '11:00:00', '12:00:00'),
+(4,'Friday', '11:00:00', '12:00:00' ),
+(6, 'Monday', '10:00:00', '11:00:00'),
+(6, 'Wednesday', '10:00:00', '11:00:00'),
+(5, 'Tuesday', '11:00:00', '12:00:00'),
+(5, 'Friday', '11:00:00', '12:00:00');

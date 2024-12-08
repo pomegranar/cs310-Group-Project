@@ -1,3 +1,5 @@
+USE sports;
+
 CREATE VIEW active_borrower_items AS
 SELECT u.first_name, u.last_name, s.name as sport, e.name as equipment, e.number, b.borrow_when, b.due_when
 FROM borrowed b

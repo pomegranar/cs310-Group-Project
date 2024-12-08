@@ -1,4 +1,4 @@
 .venv/
 venv/
 activity_log.csv
-queries/5_testing_triggers_procedures.sql
+queries/tests/5_testing_triggers_procedures.sql

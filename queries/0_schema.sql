@@ -97,7 +97,8 @@ CREATE TABLE
         facility_id INT PRIMARY KEY AUTO_INCREMENT,
         name 		VARCHAR(100) NOT NULL,
         reservable 	BOOLEAN NOT NULL,
-        floor 		INT NOT NULL
+        floor 		INT NOT NULL,
+        CONSTRAINT unique_facility UNIQUE (name, floor)
     );
 
 
@@ -108,8 +109,9 @@ CREATE TABLE
         instructor_id 	INT NOT NULL,
         location 		INT,
         FOREIGN KEY (sport_id) REFERENCES sport (sport_id),
-        FOREIGN KEY (instructor_id) REFERENCES user(user_id),
-        FOREIGN KEY (location) REFERENCES facility (facility_id)
+        FOREIGN KEY (instructor_id) REFERENCES user (user_id),
+        FOREIGN KEY (location) REFERENCES facility (facility_id),
+        CONSTRAINT unique_class UNIQUE (sport_id, instructor_id, location)
     );
 
 
@@ -118,8 +120,8 @@ CREATE TABLE
         schedule_id INT PRIMARY KEY AUTO_INCREMENT,
         class_id INT NOT NULL,
         day_of_week ENUM('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'),
-        start_time DATETIME NOT NULL,
-        end_time DATETIME NOT NULL,
+        start_time TIME NOT NULL,
+        end_time TIME NOT NULL,
         FOREIGN KEY (class_id) REFERENCES class(class_id)
 );
 
@@ -179,3 +181,7 @@ CREATE TABLE
         FOREIGN KEY (user_id) REFERENCES user(user_id),
         FOREIGN KEY (class_id) REFERENCES class (class_id)
     );
+
+
+
+
