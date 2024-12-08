@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Sports Complex IMS</title>
+		<title>Equipment Check-In</title>
 		<link rel="icon" type="image/x-icon" href="/static/Athletics_logo.png" />
 		<!-- Bootstrap CSS -->
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
@@ -40,11 +40,11 @@
 				<div class="collapse navbar-collapse" id="navbarNav">
 					<ul class="navbar-nav">
 						<li class="nav-item">
-							<a class="nav-link active" aria-current="page" href="/">Equipment Check-Out</a>
+							<a class="nav-link" href="/">Equipment Check-Out</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="/checkin">Equipment Check-In</a>
-						</li>						
+							<a class="nav-link active" href="/checkin">Equipment Check-In</a>
+						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="/reserve">Facility Reservations</a>
 						</li>
@@ -65,11 +65,11 @@
 
 		<!-- Main Content -->
 		<div class="container mt-5">
-			<h1 class="text-center mb-4">Equipment Check-Out</h1>
+			<h1 class="text-center mb-4">Equipment Check-In</h1>
 			<div class="row justify-content-center">
 				<div class="col-md-6">
-					<!-- Equipment Check-Out Form -->
-					<form id="checkOutForm" class="p-4 border rounded shadow">
+					<!-- Equipment Check-In Form -->
+					<form id="checkInForm" class="p-4 border rounded shadow">
 						<div class="mb-3">
 							<label for="card_id" class="form-label">Tap Card:</label>
 							<input type="text" id="card_id" name="card_id" class="form-control" placeholder="Enter your card ID" required />
@@ -86,7 +86,7 @@
 								<!-- Options will be populated dynamically -->
 							</select>
 						</div>
-						<button type="submit" class="btn btn-primary w-100">Check Out</button>
+						<button type="submit" class="btn btn-primary w-100">Check In</button>
 					</form>
 				</div>
 			</div>
@@ -104,7 +104,6 @@
 
 		<!-- Bootstrap JS -->
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-		<script src="../static/checkout.js"></script>
+		<script src="../static/checkin.js"></script>
 	</body>
 </html>

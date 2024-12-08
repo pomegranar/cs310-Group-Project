@@ -206,6 +206,10 @@ def reserve():
     """Renders the reservation page"""
     return render_template('reserve.html')
 
+@app.route('/checkin')
+def checkin():
+    return render_template('checkin.html')
+
 
 @app.route('/reserve_facility', methods=['POST'])
 def reserve_facility():
