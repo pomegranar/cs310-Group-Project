@@ -36,7 +36,13 @@ BEGIN
         (p_start_time <= start_time AND p_end_time >= end_time)
       );
 
-    IF p_user_id NOT IN (SELECT user_id FROM active_members) THEN
+    IF CURTIME() > '21:00:00' OR CURTIME() < '07:00:00' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The Sports Complex is closed for the day, come back tomorrow after 7am!';
+    ELSEIF p_user_id IN (SELECT user_id FROM penalty) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'User has a penalty and can not make reservations until fees are paid.';
+    ELSEIF p_user_id NOT IN (SELECT user_id FROM active_members) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'User has no active membership.';
     ELSEIF conflict_count > 0 THEN
@@ -75,9 +81,15 @@ BEGIN
     FROM borrowed
     WHERE equipment_id = p_equipment_id AND returned_on IS NULL;
 
-    IF existing_checkouts > 0 THEN
+    IF CURTIME() > '21:00:00' OR CURTIME() < '07:00:00' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The Sports Complex is closed for the day, come back tomorrow after 7am!';
+    ELSEIF existing_checkouts > 0 THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'Equipment unavailable.';
+    ELSEIF p_user_id IN (SELECT user_id FROM penalty) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'User has a penalty and can not check out equipment until fees are paid.';
     ELSEIF p_user_id NOT IN (SELECT user_id FROM active_members) THEN
         SIGNAL SQLSTATE '45000'
         SET MESSAGE_TEXT = 'User has no active membership.';

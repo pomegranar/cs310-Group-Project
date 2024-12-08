@@ -63,7 +63,8 @@ CREATE TRIGGER send_reminder_to_return
             INSERT INTO notification(user_id, message, timestamp)
             SELECT
                     NEW.user_id,
-                    CONCAT('Dear ', user.first_name, ' ', user.last_name, ', please return the following item: ', equipment.name, ' within an hour; otherwise you will be issued with a 25RMB penalty. Thank you'
+                    CONCAT('Dear ', user.first_name, ' ', user.last_name, ', please return the following item: ', equipment.name, ' within an hour; 
+                    otherwise you will be issued a 25RMB penalty. Thank you!'
                     ),
                     NOW()
             FROM user
