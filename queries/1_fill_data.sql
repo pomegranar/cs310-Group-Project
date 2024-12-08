@@ -112,3 +112,15 @@ INSERT INTO schedule(class_id, day_of_week, start_time, end_time) VALUES
 (6, 'Wednesday', '10:00:00', '11:00:00'),
 (5, 'Tuesday', '11:00:00', '12:00:00'),
 (5, 'Friday', '11:00:00', '12:00:00');
+
+
+INSERT INTO announcement(sport_id, message) VALUES
+(1, 'Luka Doncic is coming to campus to give a talk! December 8, 17:00. IB'),
+(8, 'Cristiano Ronaldo is visiting our campus for a masterclass on December 9, 15:00!'),
+(15, 'Watch Islam Makhachev press conference for UFC311 live on DKU TV!');
+
+INSERT INTO subscription(user_id, sport_id) VALUES
+(4, 8),
+(3, 15),
+(1, 1);
+

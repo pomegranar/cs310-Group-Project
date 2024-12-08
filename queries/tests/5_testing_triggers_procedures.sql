@@ -19,3 +19,4 @@ CALL enroll_users_to_classes(
      );
 
 
+SELECT * FROM announcement;

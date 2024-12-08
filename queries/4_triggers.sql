@@ -3,8 +3,8 @@ USE sports;
 -- DROP TRIGGER set_due_date
 -- DROP TRIGGER apply_penalty_overdue_equipment;
 -- DROP TRIGGER prevent_duplicate_borrow;
--- DROP TRIGGER update_equipment_on_borrow;
--- DROP TRIGGER prevent_borrowed_equipment_borrow;
+-- DROP TRIGGER send_reminder_to_return;
+-- DROP TRIGGER penalty_notification;
 
 
 -- TRIGGER to set the due date and time to specifically 9pm the current day.
@@ -96,6 +96,42 @@ CREATE TRIGGER penalty_notification
     END $$
 
 DELIMITER ;
+
+
+
+-- TRIGGER to send notifications to a user who is subscribed for an event
+DELIMITER $$
+
+CREATE TRIGGER announcement_notification
+    AFTER INSERT ON announcement
+    FOR EACH ROW
+    BEGIN
+        DECLARE user_count INT DEFAULT 0; -- number of users subscribed to a particular sport announcements
+        DECLARE index_num INT DEFAULT 0;
+
+        SELECT COUNT(*) INTO user_count
+        FROM subscription
+        WHERE sport_id= NEW.sport_id;
+
+        -- derive the user_id for the current index
+        WHILE index_num < user_count DO
+            INSERT INTO notification(user_id, message, timestamp)
+            SELECT
+                    subscription.user_id,
+            CONCAT('Dear ', user.first_name, ' ', user.last_name, ' you are receiving a new notification for the following sport: ', sport.name , '.',
+                       'The message content is: ', NEW.message),
+            NOW()
+            FROM subscription
+            JOIN user USING (user_id)
+            JOIN sport USING (sport_id)
+            WHERE subscription.sport_id= NEW.sport_id;
+
+            SET index_num= index_num + 1;
+
+        END WHILE;
+
+    END $$
+
 
 
 
