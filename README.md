@@ -2,7 +2,10 @@
 
 Group project for the Computer Science 310 – Introduction to Databases course at Duke Kunshan University.
 
-Team members are: Anar, Doniyor, Sean
+Team members are:
+Anar (pomegranar),
+Doniyor (Donik04),
+Sean (sean-allen-siegfreid)
 
 # How to Install & Run:
 
@@ -16,18 +19,18 @@ git clone https://github.com/pomegranar/cs310-Group-Project.git
 
 ### Dependencies
 
-Assuming you have the latest versions of Python and MySQL installed, we recommend you set up a Python **virtual environment** to isolate dependencies.
+Assuming you have the latest versions of Python and **MySQL** installed, we recommend you set up a Python **virtual environment** to isolate Python dependencies.
 
 ```bash
-python -m venv venv
+python -m venv .venv
 ```
 
-You can then _activate_ it with the following command:
+You can then _activate_ it with the following commands:
 
-on macOS/Linux:
+on macOS & Linux:
 
 ```bash
-source venv/bin/activate
+source .venv/bin/activate
 ```
 
 on Windows Powershell:
@@ -42,35 +45,23 @@ on Windows CMD:
 ./.venv/Scripts/Activate.bat
 ```
 
-After you _activate_ the virtual environment, you can run the following command to tell Pip to download the necessary libraries:
+After you _activate_ the virtual environment, you can run the following Pip command to install the dependencies:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-You can peek into `requirements.txt` to see all dependencies if you wish.
-
-## 2. Set Up the Database
-
-Once you get MySQL running, you can run the following SQL commands from the project folder to initialize and populate the database:
-
-```MySQL
-SOURCE queries/new_schema.sql;
-```
-
-```MySQL
-SOURCE queries/fill_data.sql;
-```
+You can take a look at `requirements.txt` to see the dependencies list.
 
 ## 3. Run app.py
 
-After all the setup is complete, just run the following:
+After activating the virtual environment and installing dependencies, run app.py:
 
 ```bash
 python app.py
 ```
 
-which will prompt you for your database password and start the local site on port 5000.
+The app will first prompt you for your MySQL password, set up the database, and then start the local site on port 5000.
 
 # Development:
 
@@ -79,24 +70,24 @@ which will prompt you for your database password and start the local site on por
 - [x] 28/10: project topic approval deadline.
 - [x] 03/11: software requirements specification document submission.
 - [x] 10/11: database design document submission.
-- [ ] 05/12 : project presentation.
+- [x] 05/12: project presentation.
 - [ ] 08/12: report submission and peer group assessment submission.
 
 ## Development Roadmap
 
-- [ ] Define new features to add.
+- [ ] New features to add:
     - [ ] Saving logs as a JSON file.
-    - [ ] Space reservations (+schedule conflict checks via trigger).
+    - [x] Space reservations (+schedule conflict checks via trigger).
     - [ ] Class registration/check-in.
-
-# Project Presentation
-
-https://www.canva.com/design/DAGYVWdw728/etnBaLe7sTOUbEIrf3ecmw/edit?utm_content=DAGYVWdw728&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 # Project Report
 
 Overleaf link:
 https://www.overleaf.com/6913953676czmjhfqhybgb#6d925c
+
+# Project Presentation
+
+https://www.canva.com/design/DAGYVWdw728/etnBaLe7sTOUbEIrf3ecmw/edit?utm_content=DAGYVWdw728&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton
 
 # HW4:
 
@@ -114,41 +105,17 @@ Sports Complex IMS Database Design Document
 Google Docs link with edit access:
 https://docs.google.com/document/d/1gv8seOHcQIo4mhCA1abxsu-VML-hen7Qq4Lq1JHkTHk/edit?usp=sharing
 
-## Tables
-
-- [ ] Users
-- [ ] Equipment
-- [ ] Notifications (email to users)
-
-## User types
-
-- [ ] Student
-- [ ] Faculty
-- [ ] Lifeguard
-- [ ] Affiliates/Family of faculty
-- [ ] Worker
-- [ ] Student worker
-- [ ] Climbing wall staff
-- [ ] Security guard
-
-## Improvements
-
-- Automatically approve facility requests.
-- Closing announcement thing.
-- Tapping card should automatically enter it into the required text field.
-- Typing to search for equipment to check out should not be required. Everything should be buttons.
-
 # SRS
 
 ## Required Sections for the Software Requirements Specification:
 
-- [ ] Introduction.
+- [x] Introduction.
       This describes the **need for the system**. It should briefly describe the system’s functions and explain **how it will work with other systems**. It should also describe how the system **fits into the overall business or strategic objectives** of the organization commissioning the software.
-- [ ] User requirements definition.
+- [x] User requirements definition.
       Here, you describe the **services provided for the user**. The nonfunctional system requirements should also be described in this section. This description may use natural language, diagrams, or other notations that are understandable to customers. Product and process standards that must be followed should be specified.
-- [ ] System requirements specification.
+- [x] System requirements specification.
       This describes the functional and non-functional requirements in more detail. If necessary, further detail may also be added to the nonfunctional requirements. Interfaces to other systems may be defined.
-- [ ] System models.
+- [x] System models.
       This chapter includes graphical system models showing the relationships between the system components and the system and its environment. Examples of possible models are object models, data-flow models, or semantic data models.
 
 ## Collaborative Google Doc Link:
