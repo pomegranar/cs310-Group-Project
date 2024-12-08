@@ -4,6 +4,8 @@ USE sports;
 -- DROP PROCEDURE checkout_equipment;
 -- DROP PROCEDURE register_user;
 -- DROP PROCEDURE enroll_users_to_classes;
+-- DROP PROCEDURE create_new_announcement;
+-- DROP PROCEDURE create_new_subscription_for_user;
 
 
 -- PROCEDURE FOR FACILITY RESERVATION
@@ -201,9 +203,70 @@ END $$
 DELIMITER ;
 
 
+-- PROCEDURE TO CREATE NEW EVENTS TO ANNOUNCEMENTS
+DELIMITER $$
+
+CREATE PROCEDURE create_new_announcement(
+    IN p_sport_id INT,
+    IN p_message TEXT,
+    IN p_timestamp DATETIME
+)
+BEGIN
+    IF EXISTS(SELECT * FROM announcement
+              WHERE p_sport_id= sport_id AND p_message= message) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The announcement already exists for this sport';
+
+    ELSEIF NOT EXISTS(SELECT sport_id FROM sport
+                      WHERE p_sport_id= sport_id) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'There is no such sport to make an announcement for.';
+
+    ELSEIF p_message IS NULL OR TRIM(p_message)= '' THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Announcement message cannot be empty';
+
+    ELSEIF p_timestamp IS NULL THEN
+        SET p_timestamp= CURRENT_TIMESTAMP;
+
+    ELSE
+        INSERT INTO announcement(sport_id, message, timestamp)
+        VALUES(p_sport_id, p_message, p_timestamp);
+
+    END IF;
+END $$
+
+DELIMITER ;
 
 
+-- PROCEDURE TO CREATE NEW SUBSCRIPTIONS
+DELIMITER $$
 
+CREATE PROCEDURE create_new_subscription_for_user(
+    IN p_user_id INT,
+    IN p_sport_id TEXT,
+    IN p_sub_date DATETIME
+)
+BEGIN
+    IF EXISTS(SELECT * FROM subscription
+              WHERE p_sport_id= sport_id AND p_user_id= user_id) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'The subscription for this user for this sport already exists.';
+
+    ELSEIF NOT EXISTS(SELECT sport_id FROM sport
+                      WHERE p_sport_id= sport_id) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'There is no such sport to subscribe for.';
+
+    ELSEIF p_sub_date IS NULL THEN
+        SET p_sub_date= CURRENT_TIMESTAMP;
+
+    ELSE
+        INSERT INTO subscription(user_id,sport_id, sub_date)
+        VALUES(p_user_id, p_sport_id, p_sub_date);
+
+    END IF;
+END $$
 
 
 
