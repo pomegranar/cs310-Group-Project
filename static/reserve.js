@@ -34,6 +34,7 @@ document.getElementById("reservationForm").addEventListener("submit", async (e) 
 });
 
 document.addEventListener("DOMContentLoaded", function () {
+	moveCursorToEnd();
 	const facilitySelect = document.getElementById("facilityId");
 
 	// Fetch facility data from the server and populate options dynamically.

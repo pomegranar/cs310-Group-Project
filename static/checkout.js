@@ -1,5 +1,6 @@
 // Checkout handling script for the database:
 document.addEventListener("DOMContentLoaded", function () {
+	moveCursorToEnd();
 	const sportContainer = document.querySelector("#sport-container"); // The div containing the radio buttons
 	const equipmentSelect = document.getElementById("equipment");
 
